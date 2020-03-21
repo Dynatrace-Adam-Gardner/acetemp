@@ -10,7 +10,7 @@ import static groovyx.net.http.ContentType.*
   Returns either 0(=no errors), 1(=create/update management zone failed)
 \***************************/
 @NonCPS
-def call( Map args ) {
+def dt_sendEvent( Map args ) {
 
  /*
    String strKeptnURL;
