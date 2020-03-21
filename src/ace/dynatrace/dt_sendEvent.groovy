@@ -7,12 +7,24 @@ import static groovyx.net.http.ContentType.*
 
 /***************************\
   This function assumes we run on a Jenkins Agent that has curl command available.
-  Returns either 0(=no errors), 1(=create/update management zone failed)
+  Returns either 0(=no errors), 1(=send event failed)
 \***************************/
 @NonCPS
 def dt_sendEvent( Map args ) {
 
- /*
+ /* -- Inputs --
+   'keptn_url'
+   'keptn_api_token'
+   'keptn_project'
+   'keptn_service'
+   'keptn_stage'
+   'keptn_event_type'
+   'start_time'
+   'end_time'
+   'timeframe'
+   'debug_mode'
+    
+   -- Variables --
    String strKeptnURL;
    String strKeptnAPIToken;
    String strKeptnProject;
@@ -22,18 +34,19 @@ def dt_sendEvent( Map args ) {
    String strStartTime;
    String strEndTime;
    String strTimeframe;
+   boolean bDebug;
  */
  
- String strKeptnURL = args.containsKey("strKeptnURL") ? args.strKeptnURL : "DEFAULT";
- String strKeptnAPIToken = args.containsKey("strKeptnAPIToken") ? args.strKeptnURL : "${KEPTN_API_TOKEN}";
- String strKeptnProject = args.containsKey("strKeptnURL") ? args.strKeptnURL : "${KEPTN_PROJECT}";
- String strKeptnService = args.containsKey("strKeptnURL") ? args.strKeptnURL : "${KEPTN_SERVICE}";
- String strKeptnStage = args.containsKey("strKeptnURL") ? args.strKeptnURL : "${KEPTN_STAGE}";
- String strKeptnEventType = args.containsKey("strKeptnURL") ? args.strKeptnURL : "";
- String strStartTime = args.containsKey("strKeptnURL") ? args.strKeptnURL : "";
- String strEndTime = args.containsKey("strKeptnURL") ? args.strKeptnURL : "";
- String strTimeframe = args.containsKey("strKeptnURL") ? args.strKeptnURL : "";
- boolean bDebug = args.containsKey("debug") ? args.strKeptnURL : false;
+ String strKeptnURL = args.containsKey("keptn_url") ? args.keptn_url : "${KEPTN_URL}";
+ String strKeptnAPIToken = args.containsKey("keptn_api_token") ? args.keptn_api_token : "${KEPTN_API_TOKEN}";
+ String strKeptnProject = args.containsKey("keptn_project") ? args.keptn_project : "${KEPTN_PROJECT}";
+ String strKeptnService = args.containsKey("keptn_service") ? args.keptn_service : "${KEPTN_SERVICE}";
+ String strKeptnStage = args.containsKey("keptn_stage") ? args.keptn_stage : "${KEPTN_STAGE}";
+ String strKeptnEventType = args.containsKey("keptn_event_type") ? args.keptn_event_type : "";
+ String strStartTime = args.containsKey("start_time") ? args.start_time : "";
+ String strEndTime = args.containsKey("end_time") ? args.end_time : "";
+ String strTimeframe = args.containsKey("timeframe") ? args.timeframe : "";
+ boolean bDebug = args.containsKey("debug_mode") ? args.debug_mode : false;
  
  echo "[dt_sendEvent.groovy] Debug Mode: " + bDebug;
  
