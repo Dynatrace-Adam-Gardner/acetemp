@@ -120,8 +120,8 @@ def processEvent( Map args ) {
     echo "[dt_processEvent.groovy] >> Keptn Context: " + strKeptnContext;
     
     // Build additional bits of URL '?keptnContext=1234&type=sh.keptn.event.*'
-    http.addQueryParam 'keptnContext', strKeptnContext
-    http.addQueryParam 'type', strKeptnEventType
+    //http.addQueryParam 'keptnContext', strKeptnContext
+    //http.addQueryParam 'type', strKeptnEventType
    
     http.request( GET, JSON ) { req ->
       uri.query = [ keptnContext: strKeptnContext, type: strKeptnEventType ]
