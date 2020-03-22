@@ -80,6 +80,7 @@ def dt_sendEvent( Map args ) {
             teststrategy: "manual"
           ]
       ]
+  }
    
    response.success = { resp, json ->
     println "Success: ${resp} ++ ${json}";
