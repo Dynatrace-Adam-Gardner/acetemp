@@ -5,17 +5,11 @@ import groovy.json.JsonOutput
 import static groovyx.net.http.Method.*
 import static groovyx.net.http.ContentType.*
 
-String EVENT_METHOD_SEND = "SEND";
-String EVENT_METHOD_GET = "GET";
-
 /***************************\
   This function assumes we run on a Jenkins Agent that has curl command available.
 \***************************/
 @NonCPS
-def sendEvent( Map args ) {
-
-  echo "[dt_sendEvent.groovy] EVENT_METHOD_SEND is: " + EVENT_METHOD_SEND;
-  echo "[dt_sendEvent.groovy] EVENT_METHOD_GET is: " + EVENT_METHOD_GET;
+def processEvent( Map args ) {
  
  /* -- Inputs --
    'keptn_url'
@@ -37,6 +31,7 @@ def sendEvent( Map args ) {
    String strKeptnService;
    String strKeptnStage;
    String strKeptnEventType;
+   String strKeptnEventMethod;
    String strStartTime;
    String strEndTime;
    String strTimeframe;
@@ -49,23 +44,25 @@ def sendEvent( Map args ) {
  String strKeptnService = args.containsKey("keptn_service") ? args.keptn_service : "${KEPTN_SERVICE}";
  String strKeptnStage = args.containsKey("keptn_stage") ? args.keptn_stage : "${KEPTN_STAGE}";
  String strKeptnEventType = args.containsKey("keptn_event_type") ? args.keptn_event_type : "";
+ String strKeptnEventMethod = args.containsKey("keptn_event_method") ? args.keptn_event_type : "";
  String strStartTime = args.containsKey("start_time") ? args.start_time : "${START_TIME}";
  String strEndTime = args.containsKey("end_time") ? args.end_time : "${END_TIME}";
  String strTimeframe = args.containsKey("timeframe") ? args.timeframe : "${TIMEFRAME}";
  boolean bDebug = args.containsKey("debug_mode") ? args.debug_mode : false;
  
- echo "[dt_sendEvent.groovy] Debug Mode: " + bDebug;
+ echo "[dt_processEvent.groovy] Debug Mode: " + bDebug;
  
  if (bDebug) {
-   echo "[dt_sendEvent.groovy] Keptn URL is: " + strKeptnURL;
-   echo "[dt_sendEvent.groovy] Keptn API Token is: " + strKeptnAPIToken;
-   echo "[dt_sendEvent.groovy] Keptn Project is: " + strKeptnProject;
-   echo "[dt_sendEvent.groovy] Keptn Service is: " + strKeptnService;
-   echo "[dt_sendEvent.groovy] Keptn Stage is: " + strKeptnStage;
-   echo "[dt_sendEvent.groovy] Keptn Event Type is: " + strKeptnEventType;
-   echo "[dt_sendEvent.groovy] Start Time is: " + strStartTime;
-   echo "[dt_sendEvent.groovy] End Time is: " + strEndTime;
-   echo "[dt_sendEvent.groovy] Timeframe is: " + strTimeframe;
+   echo "[dt_processEvent.groovy] Keptn URL is: " + strKeptnURL;
+   echo "[dt_processEvent.groovy] Keptn API Token is: " + strKeptnAPIToken;
+   echo "[dt_processEvent.groovy] Keptn Project is: " + strKeptnProject;
+   echo "[dt_processEvent.groovy] Keptn Service is: " + strKeptnService;
+   echo "[dt_processEvent.groovy] Keptn Stage is: " + strKeptnStage;
+   echo "[dt_processEvent.groovy] Keptn Event Type is: " + strKeptnEventType;
+   echo "[dt_sendEvent.groovy] Keptn Event Method is: " + strKeptnEventMethod;
+   echo "[dt_processEvent.groovy] Start Time is: " + strStartTime;
+   echo "[dt_processEvent.groovy] End Time is: " + strEndTime;
+   echo "[dt_processEvent.groovy] Timeframe is: " + strTimeframe;
  }
  
  // TODO - Error Checking
@@ -74,8 +71,9 @@ def sendEvent( Map args ) {
   def http = new HTTPBuilder( strKeptnURL + '/v1/event' );
  
   http.ignoreSSLIssues(); // TODO - REMOVE?
- 
-  http.request( POST, JSON ) { req ->
+  
+  if ("SEND" == strKeptnEventMethod) {
+    http.request( POST, JSON ) { req ->
       headers.'x-token' = strKeptnAPIToken
       headers.'Content-Type' = 'application/json'
       body = [
@@ -90,22 +88,25 @@ def sendEvent( Map args ) {
             teststrategy: "manual"
           ]
       ]
-    response.success = { resp, json ->
-      echo "[dt_sendEvent.groovy] Keptn Context: ${env.keptnContext}";
-      echo "[dt_sendEvent.groovy] Success: ${json} ++ Keptn Context: ${json.keptnContext}";
-      echo "[dt_sendEvent.groovy] Setting returnValue to: ${json.keptnContext}";
-      returnValue = json.keptnContext;
-    }
+     response.success = { resp, json ->
+       echo "[dt_processEvent.groovy] Keptn Context: ${env.keptnContext}";
+       echo "[dt_processEvent.groovy] Success: ${json} ++ Keptn Context: ${json.keptnContext}";
+       echo "[dt_processEvent.groovy] Setting returnValue to: ${json.keptnContext}";
+       returnValue = json.keptnContext;
+     }
     
-    response.failure = { resp, json ->
-     println "Failure: ${resp} ++ ${json}";
-     echo "[dt_sendEvent.groovy] Setting returnValue to: ${json}";
-     returnValue = json;
-    }
-  }
-  echo "[dt_sendEvent.groovy] Returning: ${returnValue}";
+     response.failure = { resp, json ->
+       println "Failure: ${resp} ++ ${json}";
+       echo "[dt_processEvent.groovy] Setting returnValue to: ${json}";
+       returnValue = json;
+     }
+   }
+ 
+  echo "[dt_processEvent.groovy] Returning: ${returnValue}";
   return returnValue;
-}
-
-def getEvent( Map args ) {
+  } // End if "SEND" Keptn Event event
+ 
+  if ("GET" == strKeptnEventMethod) {
+    echo "[dt_processEvent.groovy] GETting Keptn Event...";
+  }
 }
