@@ -5,8 +5,8 @@ import groovy.json.JsonOutput
 import static groovyx.net.http.Method.*
 import static groovyx.net.http.ContentType.*
 
-def EVENT_METHOD_SEND = "SEND";
-def EVENT_METHOD_GET = "GET";
+String EVENT_METHOD_SEND = "SEND";
+String EVENT_METHOD_GET = "GET";
 
 /***************************\
   This function assumes we run on a Jenkins Agent that has curl command available.
