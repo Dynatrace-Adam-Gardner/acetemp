@@ -137,7 +137,7 @@ def processEvent( Map args ) {
         returnValue = json;
      }
     }
-  } // End if "SEND" Keptn Event
+  } // End if "GET" Keptn Event
  
   return returnValue;
 }
