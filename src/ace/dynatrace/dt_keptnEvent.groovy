@@ -44,7 +44,7 @@ def processEvent( Map args ) {
  String strKeptnService = args.containsKey("keptn_service") ? args.keptn_service : "${KEPTN_SERVICE}";
  String strKeptnStage = args.containsKey("keptn_stage") ? args.keptn_stage : "${KEPTN_STAGE}";
  String strKeptnEventType = args.containsKey("keptn_event_type") ? args.keptn_event_type : "";
- String strKeptnEventMethod = args.containsKey("keptn_event_method") ? args.keptn_event_type : "";
+ String strKeptnEventMethod = args.containsKey("keptn_event_method") ? args.keptn_event_method : "";
  String strStartTime = args.containsKey("start_time") ? args.start_time : "${START_TIME}";
  String strEndTime = args.containsKey("end_time") ? args.end_time : "${END_TIME}";
  String strTimeframe = args.containsKey("timeframe") ? args.timeframe : "${TIMEFRAME}";
