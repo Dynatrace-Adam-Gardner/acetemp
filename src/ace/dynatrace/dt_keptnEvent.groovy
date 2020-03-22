@@ -106,6 +106,7 @@ def processEvent( Map args ) {
        if (bDebug) echo "[dt_processEvent.groovy] Setting returnValue to: ${json}";
        returnValue = json;
      }
+    }
    }
     catch (Exception e) {
       echo "Exception caught: " + e.getMessage();
