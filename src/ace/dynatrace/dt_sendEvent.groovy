@@ -107,7 +107,9 @@ def dt_sendEvent( Map args ) {
   echo "[dt_sendEvent.groovy] HERE 7";
   echo returnValue;
   echo "[dt_sendEvent.groovy] HERE 8";
-  echo "[dt_sendEvent.groovy] Returning: " + returnValue;
+  echo "${returnValue}";
   echo "[dt_sendEvent.groovy] HERE 9";
+  echo "[dt_sendEvent.groovy] Returning: ${returnValue}";
+  echo "[dt_sendEvent.groovy] HERE 10";
   return returnValue;
 }
