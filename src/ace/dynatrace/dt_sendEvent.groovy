@@ -101,9 +101,9 @@ def dt_sendEvent( Map args ) {
     }
   }
   echo "[dt_sendEvent.groovy] HERE 5";
-  echo ${returnValue};
+  //echo ${returnValue};
   echo "[dt_sendEvent.groovy] HERE 6";
-  echo $returnValue;
+  //echo $returnValue;
   echo "[dt_sendEvent.groovy] HERE 7";
   echo returnValue;
   echo "[dt_sendEvent.groovy] HERE 8";
