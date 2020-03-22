@@ -89,7 +89,7 @@ def dt_sendEvent( Map args ) {
       echo "[dt_sendEvent.groovy] HERE 1";
       echo "[dt_sendEvent.groovy] Setting returnValue to: ${json}";
       echo "[dt_sendEvent.groovy] HERE 2";
-      returnValue = json;
+      returnValue = json.keptnContext;
       echo "[dt_sendEvent.groovy] RV: " + returnValue;
     }
     
@@ -98,7 +98,7 @@ def dt_sendEvent( Map args ) {
      echo "[dt_sendEvent.groovy] HERE 3";
      echo "[dt_sendEvent.groovy] Setting returnValue to: ${json}";
      echo "[dt_sendEvent.groovy] HERE 4";
-     returnValue = json;
+     returnValue = json.keptnContext;
     }
   }
   echo "[dt_sendEvent.groovy] HERE 5";
