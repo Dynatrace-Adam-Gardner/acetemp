@@ -115,7 +115,7 @@ def processEvent( Map args ) {
  
   if ("GET" == strKeptnEventMethod) {
     echo "[dt_processEvent.groovy] GETting Keptn Event...";
-    echo "[dt_processEvent.groovy] Keptn Context: " + strKeptnContext;
+    echo "[dt_processEvent.groovy] >> Keptn Context: " + strKeptnContext;
     
     // Build additional bits of URL '?keptnContext=1234&type=sh.keptn.event.*'
     http.addQueryParam 'keptnContext', strKeptnContext
