@@ -7,7 +7,6 @@ import static groovyx.net.http.ContentType.*
 
 /***************************\
   This function assumes we run on a Jenkins Agent that has curl command available.
-  Returns either 0(=no errors), 1(=send event failed)
 \***************************/
 
 def dt_sendEvent( Map args ) {
@@ -64,7 +63,7 @@ def dt_sendEvent( Map args ) {
  
  // TODO - Error Checking
  
-  def returnCode = 0;
+  def returnValue = "";
   def http = new HTTPBuilder( strKeptnURL + '/v1/event' );
  
   http.ignoreSSLIssues(); // TODO - REMOVE?
@@ -87,16 +86,14 @@ def dt_sendEvent( Map args ) {
     response.success = { resp, json ->
       echo "[dt_sendEvent.groovy] Keptn Context: ${env.keptnContext}";
       echo "[dt_sendEvent.groovy] Success: ${resp} ++ ${json} ++ Keptn Context: ${json.keptnContext}";
-      withEnv(["keptnContext=${json.keptnContext}"]) { // it can override any env variable
-        echo "FOO = ${env.keptnContext}" // prints "FOO = foobar"
-      }
+      returnValue = json;
     }
     
     response.failure = { resp, json ->
      println "Failure: ${resp} ++ ${json}";
-     returnCode = 1;
+     returnValue = json;
     }
   }
-   
-   return returnCode;
+   echo "[dt_sendEvent.groovy] Returning: " + returnValue;
+   return returnValue;
 }
