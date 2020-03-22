@@ -64,6 +64,7 @@ def dt_sendEvent( Map args ) {
  
  // TODO - Error Checking
  
+  def returnCode = 0;
   def http = new HTTPBuilder( strKeptnURL + '/v1/event' );
  
   http.ignoreSSLIssues(); // TODO - REMOVE?
@@ -86,14 +87,16 @@ def dt_sendEvent( Map args ) {
     response.success = { resp, json ->
       println "Keptn Context: ${env.keptnContext}";
       println "Success: ${resp} ++ ${json} ++ Keptn Context: ${json.keptnContext}";
-      return 3;
+      withEnv(["keptnContext=${json.keptnContext}"]) { // it can override any env variable
+        echo "FOO = ${env.keptnContext}" // prints "FOO = foobar"
+      }
     }
     
     response.failure = { resp, json ->
      println "Failure: ${resp} ++ ${json}";
-     return 4;
+     returnCode = 1;
     }
   }
    
-   return 0;
+   return returnCode;
 }
