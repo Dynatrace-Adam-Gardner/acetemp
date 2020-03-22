@@ -109,7 +109,7 @@ def processEvent( Map args ) {
     }
    }
     catch (Exception e) {
-      echo "Exception caught: " + e.getMessage();
+      echo "[dt_processEvent.groovy] SEND EVENT: Exception caught: " + e.getMessage();
       returnValue = e.getMessage();
       return -1;
     }
@@ -121,7 +121,7 @@ def processEvent( Map args ) {
  //---------------------------------
  
   if ("GET" == strKeptnEventMethod) {  
-    
+   try {  
     http.request( GET, JSON ) {
       uri.query = [ keptnContext:strKeptnContext, type: strKeptnEventType ]
       headers.'x-token' = strKeptnAPIToken
@@ -143,6 +143,12 @@ def processEvent( Map args ) {
         returnValue = json;
      }
     }
+   }
+   catch (Exception e) {
+     echo "[dt_processEvent.groovy] GET EVENT: Exception caught: " + e.getMessage();
+     returnValue = e.getMessage();
+     return -1;
+   }
 
   } // End if "GET" Keptn Event
  
