@@ -123,7 +123,7 @@ def processEvent( Map args ) {
     //http.addQueryParam 'keptnContext', strKeptnContext
     //http.addQueryParam 'type', strKeptnEventType
    
-    http.request( GET, JSON ) { req ->
+    http.request( GET, JSON ) {
       uri.query = [ keptnContext: strKeptnContext, type: strKeptnEventType ]
       headers.'x-token' = strKeptnAPIToken
       headers.'Content-Type' = 'application/json'
