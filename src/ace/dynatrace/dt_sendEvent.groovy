@@ -9,7 +9,7 @@ import static groovyx.net.http.ContentType.*
   This function assumes we run on a Jenkins Agent that has curl command available.
   Returns either 0(=no errors), 1(=send event failed)
 \***************************/
-@NonCPS
+
 def dt_sendEvent( Map args ) {
 
  /* -- Inputs --
@@ -85,8 +85,8 @@ def dt_sendEvent( Map args ) {
           ]
       ]
     response.success = { resp, json ->
-      println "Keptn Context: ${env.keptnContext}";
-      println "Success: ${resp} ++ ${json} ++ Keptn Context: ${json.keptnContext}";
+      echo "[dt_sendEvent.groovy] Keptn Context: ${env.keptnContext}";
+      echo "[dt_sendEvent.groovy] Success: ${resp} ++ ${json} ++ Keptn Context: ${json.keptnContext}";
       withEnv(["keptnContext=${json.keptnContext}"]) { // it can override any env variable
         echo "FOO = ${env.keptnContext}" // prints "FOO = foobar"
       }
