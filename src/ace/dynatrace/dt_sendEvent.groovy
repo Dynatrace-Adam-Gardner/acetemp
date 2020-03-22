@@ -8,7 +8,7 @@ import static groovyx.net.http.ContentType.*
 /***************************\
   This function assumes we run on a Jenkins Agent that has curl command available.
 \***************************/
-
+@NonCPS
 def dt_sendEvent( Map args ) {
 
  /* -- Inputs --
