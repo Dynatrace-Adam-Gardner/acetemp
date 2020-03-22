@@ -90,6 +90,7 @@ def dt_sendEvent( Map args ) {
       echo "[dt_sendEvent.groovy] Setting returnValue to: ${json}";
       echo "[dt_sendEvent.groovy] HERE 2";
       returnValue = json;
+      echo "[dt_sendEvent.groovy] RV: " + returnValue;
     }
     
     response.failure = { resp, json ->
@@ -105,9 +106,9 @@ def dt_sendEvent( Map args ) {
   echo "[dt_sendEvent.groovy] HERE 6";
   //echo $returnValue;
   echo "[dt_sendEvent.groovy] HERE 7";
-  echo returnValue;
+  //echo returnValue;
   echo "[dt_sendEvent.groovy] HERE 8";
-  echo "${returnValue}";
+  //echo "${returnValue}";
   echo "[dt_sendEvent.groovy] HERE 9";
   echo "[dt_sendEvent.groovy] Returning: ${returnValue}";
   echo "[dt_sendEvent.groovy] HERE 10";
