@@ -43,9 +43,9 @@ def dt_sendEvent( Map args ) {
  String strKeptnService = args.containsKey("keptn_service") ? args.keptn_service : "${KEPTN_SERVICE}";
  String strKeptnStage = args.containsKey("keptn_stage") ? args.keptn_stage : "${KEPTN_STAGE}";
  String strKeptnEventType = args.containsKey("keptn_event_type") ? args.keptn_event_type : "";
- String strStartTime = args.containsKey("start_time") ? args.start_time : "";
- String strEndTime = args.containsKey("end_time") ? args.end_time : "";
- String strTimeframe = args.containsKey("timeframe") ? args.timeframe : "";
+ String strStartTime = args.containsKey("start_time") ? args.start_time : "${START_TIME}";
+ String strEndTime = args.containsKey("end_time") ? args.end_time : "${END_TIME}";
+ String strTimeframe = args.containsKey("timeframe") ? args.timeframe : "${TIMEFRAME}";
  boolean bDebug = args.containsKey("debug_mode") ? args.debug_mode : false;
  
  echo "[dt_sendEvent.groovy] Debug Mode: " + bDebug;
@@ -62,4 +62,32 @@ def dt_sendEvent( Map args ) {
    echo "[dt_sendEvent.groovy] Timeframe is: " + strTimeframe;
  }
  
+ // TODO - Error Checking
+ 
+  def http = new HTTPBuilder( strKeptnURL + '/v1/event' );
+  http.request( POST, JSON ) { req ->
+      headers.'x-token' = strKeptnAPIToken
+      headers.'Content-Type' = 'application/json'
+      body = [
+        type: strKeptnEventType,
+        source: "Pipeline",
+        data: [
+            start: strStartTime,
+            end: strEndTime,
+            project: strKeptnProject,
+            service: strKeptnService,
+            stage: strKeptnStage,
+            teststrategy: "manual"
+          ]
+      ]
+   
+   response.success = { resp, json ->
+    println "Success: ${resp} ++ ${json}";
+   }
+   response.failure = { resp, json ->
+    println "Failure: ${resp} ++ ${json}";
+    return 1;
+   }
+   
+   return 0;
 }
