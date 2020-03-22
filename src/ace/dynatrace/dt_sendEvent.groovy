@@ -86,12 +86,12 @@ def dt_sendEvent( Map args ) {
     response.success = { resp, json ->
       println "Keptn Context: ${env.keptnContext}";
       println "Success: ${resp} ++ ${json} ++ Keptn Context: ${json.keptnContext}";
-      return "${json.keptnContext}";
+      return 3;
     }
     
     response.failure = { resp, json ->
      println "Failure: ${resp} ++ ${json}";
-     return 1;
+     return 4;
     }
   }
    
