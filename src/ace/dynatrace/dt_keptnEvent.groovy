@@ -78,8 +78,6 @@ def processEvent( Map args ) {
  
   if ("SEND" == strKeptnEventMethod) {
     http.request( POST, JSON ) { req ->
-      query.'keptnContext' = strKeptnContext
-      query.'type' = strKeptnEventType
       headers.'x-token' = strKeptnAPIToken
       headers.'Content-Type' = 'application/json'
       body = [
