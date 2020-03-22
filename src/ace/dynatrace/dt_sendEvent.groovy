@@ -65,6 +65,9 @@ def dt_sendEvent( Map args ) {
  // TODO - Error Checking
  
   def http = new HTTPBuilder( strKeptnURL + '/v1/event' );
+ 
+  http.ignoreSSLIssues(); // TODO - REMOVE?
+ 
   http.request( POST, JSON ) { req ->
       headers.'x-token' = strKeptnAPIToken
       headers.'Content-Type' = 'application/json'
