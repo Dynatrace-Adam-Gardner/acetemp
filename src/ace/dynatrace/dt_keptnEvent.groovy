@@ -69,7 +69,6 @@ def processEvent( Map args ) {
  
   def returnValue = "";
   def http = new HTTPBuilder( strKeptnURL + '/v1/event' );
- 
   http.ignoreSSLIssues(); // TODO - REMOVE?
   
   if ("SEND" == strKeptnEventMethod) {
@@ -107,6 +106,28 @@ def processEvent( Map args ) {
  
   if ("GET" == strKeptnEventMethod) {
     echo "[dt_processEvent.groovy] GETting Keptn Event...";
+    echo "[dt_processEvent.groovy] Keptn Context: $keptnContext";
+    echo "[dt_processEvent.groovy] Keptn Context: " + env.keptnContext;
+   /*
+    def html = http.get( path : '/search', query : [q:'Groovy'] )
+    http.request( GET, JSON ) { req ->
+      path = '?keptnContext='
+      headers.'x-token' = strKeptnAPIToken
+      headers.'Content-Type' = 'application/json'
+      
+      response.success = { resp, json ->
+        echo "[dt_processEvent.groovy] Success: ${json}";
+        echo "[dt_processEvent.groovy] Setting returnValue to: ${json}";
+        returnValue = json.keptnContext;
+      }
+    
+      response.failure = { resp, json ->
+        echo "[dt_processEvent.groovy] Failure: ${resp} ++ ${json}";
+        echo "[dt_processEvent.groovy] Setting returnValue to: ${json}";
+        returnValue = json;
+     }
+    }
+    */
     returnValue = "doing GET...";
   }
  
