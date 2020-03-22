@@ -122,8 +122,13 @@ def processEvent( Map args ) {
     // Build additional bits of URL '?keptnContext=1234&type=sh.keptn.event.*'
     //http.addQueryParam 'keptnContext', strKeptnContext
     //http.addQueryParam 'type', strKeptnEventType
-   
+    String strURI = "/v1/events?keptnContext=" . strKeptnContext . "&type=" . strKeptnEventType;
+    echo "New URI: " + strURI;
+    /*
+    http.setURI("/v1/events?keptnContext=" . strKeptnContext . "&type=" . strKeptnEventType);
     http.request( GET, JSON ) {
+      uri.query = [ v:'1.0', q: 'Calvin and Hobbes' ]
+      uri.query = [ v:'1.0', q: 'Calvin and Hobbes' ]
       uri.query = [ keptnContext: strKeptnContext, type: strKeptnEventType ]
       headers.'x-token' = strKeptnAPIToken
       headers.'Content-Type' = 'application/json'
@@ -140,6 +145,7 @@ def processEvent( Map args ) {
         returnValue = json;
      }
     }
+    */
   } // End if "GET" Keptn Event
  
   return returnValue;
