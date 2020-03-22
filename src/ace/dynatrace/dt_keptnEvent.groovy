@@ -106,8 +106,10 @@ def processEvent( Map args ) {
  
   if ("GET" == strKeptnEventMethod) {
     echo "[dt_processEvent.groovy] GETting Keptn Event...";
-    echo "[dt_processEvent.groovy] Keptn Context: $keptnContext";
+    echo "[dt_processEvent.groovy] HERE 1";
+    //echo "[dt_processEvent.groovy] Keptn Context: $keptnContext";
     echo "[dt_processEvent.groovy] Keptn Context: " + env.keptnContext;
+    echo "[dt_processEvent.groovy] HERE 2";
    /*
     def html = http.get( path : '/search', query : [q:'Groovy'] )
     http.request( GET, JSON ) { req ->
