@@ -108,5 +108,6 @@ def processEvent( Map args ) {
  
   if ("GET" == strKeptnEventMethod) {
     echo "[dt_processEvent.groovy] GETting Keptn Event...";
+    return "doing-this";
   }
 }
