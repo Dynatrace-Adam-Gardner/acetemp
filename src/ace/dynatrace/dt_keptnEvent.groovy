@@ -132,7 +132,7 @@ def processEvent( Map args ) {
         echo "[dt_processEvent.groovy] Success: ${json}";
         echo "[dt_processEvent.groovy] Setting returnValue to: ${json}";
        }
-        returnValue = json.keptnContext;
+        returnValue = json;
       }
     
       response.failure = { resp, json ->
