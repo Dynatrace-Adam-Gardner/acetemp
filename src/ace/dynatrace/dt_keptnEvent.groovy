@@ -5,19 +5,27 @@ import groovy.json.JsonOutput
 import static groovyx.net.http.Method.*
 import static groovyx.net.http.ContentType.*
 
+ static {
+   String EVENT_METHOD_SEND = "SEND";
+   String EVENT_METHOD_SEND = "GET";
+ }
 /***************************\
   This function assumes we run on a Jenkins Agent that has curl command available.
 \***************************/
 @NonCPS
-def dt_sendEvent( Map args ) {
+def sendEvent( Map args ) {
 
+  echo "[dt_sendEvent.groovy] EVENT_METHOD_SEND is: " + EVENT_METHOD_SEND;
+  echo "[dt_sendEvent.groovy] EVENT_METHOD_GET is: " + EVENT_METHOD_GET;
+ 
  /* -- Inputs --
    'keptn_url'
    'keptn_api_token'
    'keptn_project'
    'keptn_service'
    'keptn_stage'
-   'keptn_event_type'
+   'keptn_event_type'  // eg. 'sh.keptn.event.start-evaluation'
+   'keptn_event_method' // "SEND" or "GET"
    'start_time'
    'end_time'
    'timeframe'
@@ -98,4 +106,7 @@ def dt_sendEvent( Map args ) {
   }
   echo "[dt_sendEvent.groovy] Returning: ${returnValue}";
   return returnValue;
+}
+
+def getEvent( Map args ) {
 }
