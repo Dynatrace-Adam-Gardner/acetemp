@@ -86,11 +86,13 @@ def dt_sendEvent( Map args ) {
     response.success = { resp, json ->
       echo "[dt_sendEvent.groovy] Keptn Context: ${env.keptnContext}";
       echo "[dt_sendEvent.groovy] Success: ${resp} ++ ${json} ++ Keptn Context: ${json.keptnContext}";
+      echo "[dt_sendEvent.groovy] Setting returnValue to: " + json;
       returnValue = json;
     }
     
     response.failure = { resp, json ->
      println "Failure: ${resp} ++ ${json}";
+     echo "[dt_sendEvent.groovy] Setting returnValue to: " + json;
      returnValue = json;
     }
   }
