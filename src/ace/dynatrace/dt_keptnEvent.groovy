@@ -93,51 +93,47 @@ def processEvent( Map args ) {
           ]
       ]
      response.success = { resp, json ->
-       echo "[dt_processEvent.groovy] Keptn Context: ${env.keptnContext}";
-       echo "[dt_processEvent.groovy] Success: ${json} ++ Keptn Context: ${json.keptnContext}";
-       echo "[dt_processEvent.groovy] Setting returnValue to: ${json.keptnContext}";
+      if (bDebug) {
+        echo "[dt_processEvent.groovy] Success: ${json} ++ Keptn Context: ${json.keptnContext}";
+        echo "[dt_processEvent.groovy] Setting returnValue to: ${json.keptnContext}";
+      }
        returnValue = json.keptnContext;
      }
     
      response.failure = { resp, json ->
        println "Failure: ${resp} ++ ${json}";
-       echo "[dt_processEvent.groovy] Setting returnValue to: ${json}";
+       if (bDebug) echo "[dt_processEvent.groovy] Setting returnValue to: ${json}";
        returnValue = json;
      }
    }
  
-  echo "[dt_processEvent.groovy] Returning: ${returnValue}";
+  if (bDebug) echo "[dt_processEvent.groovy] Returning: ${returnValue}";
   } // End if "SEND" Keptn Event
  
  //---------------------------------
  //-------- GET KEPTN EVENT --------
  //---------------------------------
  
-  if ("GET" == strKeptnEventMethod) {
-    echo "[dt_processEvent.groovy] GETting Keptn Event...";
-    echo "[dt_processEvent.groovy] >> Keptn Context: " + strKeptnContext;
+  if ("GET" == strKeptnEventMethod) {  
     
-    // Build additional bits of URL '?keptnContext=1234&type=sh.keptn.event.*'
-    //http.addQueryParam 'keptnContext', strKeptnContext
-    //http.addQueryParam 'type', strKeptnEventType
-    //String strURI = "/v1/events?keptnContext=" + strKeptnContext + "&type=" + strKeptnEventType;
-    //echo "New URI: " + strURI;
-    
-    //http.setURI("/v1/events?keptnContext=" . strKeptnContext . "&type=" . strKeptnEventType);
     http.request( GET, JSON ) {
       uri.query = [ keptnContext:strKeptnContext, type: strKeptnEventType ]
       headers.'x-token' = strKeptnAPIToken
       headers.'Content-Type' = 'application/json'
       
       response.success = { resp, json ->
+       if (bDebug) {
         echo "[dt_processEvent.groovy] Success: ${json}";
         echo "[dt_processEvent.groovy] Setting returnValue to: ${json}";
+       }
         returnValue = json.keptnContext;
       }
     
       response.failure = { resp, json ->
+       if (bDebug) {
         echo "[dt_processEvent.groovy] Failure: ${resp} ++ ${json}";
         echo "[dt_processEvent.groovy] Setting returnValue to: ${json}";
+       }
         returnValue = json;
      }
     }
