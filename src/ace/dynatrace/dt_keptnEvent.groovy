@@ -103,11 +103,12 @@ def processEvent( Map args ) {
    }
  
   echo "[dt_processEvent.groovy] Returning: ${returnValue}";
-  return returnValue;
   } // End if "SEND" Keptn Event event
  
   if ("GET" == strKeptnEventMethod) {
     echo "[dt_processEvent.groovy] GETting Keptn Event...";
-    return "doing-this";
+    returnValue = "doing GET...";
   }
+ 
+  return returnValue;
 }
