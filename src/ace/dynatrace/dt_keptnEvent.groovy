@@ -120,7 +120,7 @@ def processEvent( Map args ) {
     // Build additional bits of URL '?keptnContext=1234&type=sh.keptn.event.*'
     //http.addQueryParam 'keptnContext', strKeptnContext
     //http.addQueryParam 'type', strKeptnEventType
-    String strURI = "/v1/events?keptnContext=" . strKeptnContext . "&type=" . strKeptnEventType;
+    String strURI = "/v1/events?keptnContext=" + strKeptnContext + "&type=" + strKeptnEventType;
     echo "New URI: " + strURI;
     /*
     http.setURI("/v1/events?keptnContext=" . strKeptnContext . "&type=" . strKeptnEventType);
