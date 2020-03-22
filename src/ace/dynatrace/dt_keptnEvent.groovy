@@ -77,6 +77,7 @@ def processEvent( Map args ) {
  //----------------------------------
  
   if ("SEND" == strKeptnEventMethod) {
+   try {
     http.request( POST, JSON ) { req ->
       headers.'x-token' = strKeptnAPIToken
       headers.'Content-Type' = 'application/json'
@@ -106,7 +107,11 @@ def processEvent( Map args ) {
        returnValue = json;
      }
    }
- 
+    catch (Exception e) {
+      echo "Exception caught: " + e.getMessage();
+      returnValue = e.getMessage();
+      return -1;
+    }
   if (bDebug) echo "[dt_processEvent.groovy] Returning: ${returnValue}";
   } // End if "SEND" Keptn Event
  
