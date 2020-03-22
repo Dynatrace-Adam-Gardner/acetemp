@@ -5,9 +5,6 @@ import groovy.json.JsonOutput
 import static groovyx.net.http.Method.*
 import static groovyx.net.http.ContentType.*
 
-/***************************\
-  This function assumes we run on a Jenkins Agent that has curl command available.
-\***************************/
 @NonCPS
 def processEvent( Map args ) {
  
@@ -77,7 +74,8 @@ def processEvent( Map args ) {
 
  //----------------------------------
  //-------- SEND KEPTN EVENT --------
- //---------------------------------- 
+ //----------------------------------
+ 
   if ("SEND" == strKeptnEventMethod) {
     http.request( POST, JSON ) { req ->
       headers.'x-token' = strKeptnAPIToken
@@ -114,6 +112,7 @@ def processEvent( Map args ) {
  //---------------------------------
  //-------- GET KEPTN EVENT --------
  //---------------------------------
+ 
   if ("GET" == strKeptnEventMethod) {
     echo "[dt_processEvent.groovy] GETting Keptn Event...";
     echo "[dt_processEvent.groovy] HERE 1";
@@ -121,7 +120,9 @@ def processEvent( Map args ) {
     echo "[dt_processEvent.groovy] Keptn Context 2: " + strKeptnContext;
     echo "[dt_processEvent.groovy] HERE 2";
    
-    def html = http.get( path : '/search', query : [q:'Groovy'] )
+    //def html = http.get( path : '/search', query : [q:'Groovy'] )
+    echo "[dt_processEvent.groovy] http: " + http;
+    
     http.request( GET, JSON ) { req ->
       path = '?keptnContext=' + strKeptnContext + '&type=' + strKeptnEventType
       headers.'x-token' = strKeptnAPIToken
@@ -139,8 +140,6 @@ def processEvent( Map args ) {
         returnValue = json;
      }
     }
-    
-    //returnValue = "doing GET...";
   } // End if "SEND" Keptn Event
  
   return returnValue;
