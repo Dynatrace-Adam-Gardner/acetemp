@@ -83,15 +83,15 @@ def dt_sendEvent( Map args ) {
             teststrategy: "manual"
           ]
       ]
+    response.success = { resp, json ->
+      println "Success: ${resp} ++ ${json}";
+    }
+    
+    response.failure = { resp, json ->
+     println "Failure: ${resp} ++ ${json}";
+     return 1;
+    }
   }
-   
-   response.success = { resp, json ->
-    println "Success: ${resp} ++ ${json}";
-   }
-   response.failure = { resp, json ->
-    println "Failure: ${resp} ++ ${json}";
-    return 1;
-   }
    
    return 0;
 }
