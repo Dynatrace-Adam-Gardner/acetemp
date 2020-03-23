@@ -153,6 +153,7 @@ def processEvent( Map args ) {
       }
      iCount++;
      sleep(10); // Sleep for 10s before trying again.
+     echo "Return Value is now: " + returnValue;
     } // End while loop
    } // End try
    catch (Exception e) {
