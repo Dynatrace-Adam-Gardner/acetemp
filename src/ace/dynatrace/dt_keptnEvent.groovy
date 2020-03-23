@@ -124,11 +124,13 @@ def processEvent( Map args ) {
      echo "[dt_processEvent.groovy] Keptn Context: " + strKeptnContext;
     
     http.request( GET, JSON ) {
-      uri.query = [ keptnContext:strKeptnContext, type: strKeptnEventType ]
-      headers.'x-token' = strKeptnAPIToken
-      headers.'Content-Type' = 'application/json'
+      http.setUri('/v1/event?keptnContext=' . strKeptnContext . '&type=' . strKeptnEventType);
+      //uri.query = [ keptnContext:strKeptnContext, type:strKeptnEventType ];
+      headers.'x-token' = strKeptnAPIToken;
+      headers.'Content-Type' = 'application/json';
      
       echo "HTTP URI: " + http.getUri();
+      echo "HTTP Headers: " + http.getHeaders();
       echo "HTTP Path: " + http.getUri().getPath();
       echo "HTTP Query: " + http.getUri().getQuery();
       
