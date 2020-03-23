@@ -145,17 +145,18 @@ def processEvent( Map args ) {
         echo "[dt_processEvent.groovy] Setting returnValue to: ${json}";
        }
         returnValue = json;
-     }
-    }
+       }
+      }
+     iCount++;
+     sleep(10000); // Sleep for 10s before trying again.
+    } // End while loop
+    } // End while
    }
    catch (Exception e) {
      echo "[dt_processEvent.groovy] GET EVENT: Exception caught: " + e.getMessage();
      returnValue = e.getMessage();
      return -1;
    }
-    iCount++;
-    sleep(10000); // Sleep for 10s before trying again.
-   } // End while loop
 
   } // End if "GET" Keptn Event
  
