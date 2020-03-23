@@ -126,6 +126,8 @@ def processEvent( Map args ) {
     /* Loop until a valid result is returned.
      * returnValue is empty on first iteration
      */
+    echo "[dt_processEvent.groovy] RETURN VALUE: " + returnValue;
+    
     while (returnValue = "" || returnValue.contains("500"))
     {
      echo "[dt_processEvent.groovy] GET iteration count: " + iCount;
