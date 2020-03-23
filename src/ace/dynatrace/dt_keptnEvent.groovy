@@ -150,14 +150,12 @@ def processEvent( Map args ) {
      iCount++;
      sleep(10000); // Sleep for 10s before trying again.
     } // End while loop
-    } // End while
-   }
+   } // End try
    catch (Exception e) {
      echo "[dt_processEvent.groovy] GET EVENT: Exception caught: " + e.getMessage();
      returnValue = e.getMessage();
      return -1;
    }
-
   } // End if "GET" Keptn Event
  
   return returnValue;
