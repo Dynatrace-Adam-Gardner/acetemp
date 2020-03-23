@@ -128,6 +128,7 @@ def processEvent( Map args ) {
      */
     while (returnValue == "" || returnValue.contains("500"))
     {
+     sleep(10);
      echo "[dt_processEvent.groovy] GET iteration count: " + iCount;
      
     http.request( GET, JSON ) {
@@ -153,7 +154,7 @@ def processEvent( Map args ) {
       }
      iCount++;
      echo "Return Value is now #1: " + returnValue;
-     sleep(10); // Sleep for 10s before trying again.
+     //sleep(10); // Sleep for 10s before trying again.
      echo "Return Value is now #2: " + returnValue;
     } // End while loop
    } // End try
