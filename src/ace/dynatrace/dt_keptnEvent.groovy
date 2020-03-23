@@ -137,7 +137,7 @@ def processEvent( Map args ) {
     
       response.failure = { resp, json ->
        if (bDebug) {
-        //echo "[dt_processEvent.groovy] Failure: ${resp} ++ ${json}";
+        echo "[dt_processEvent.groovy] Failure: ${json}";
         //echo "[dt_processEvent.groovy] Setting returnValue to: ${json}";
        }
         returnValue = [[key: 'foo', value: 'bar-fail']];
