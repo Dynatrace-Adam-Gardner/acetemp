@@ -124,7 +124,7 @@ def processEvent( Map args ) {
      echo "[dt_processEvent.groovy] Keptn Context: " + strKeptnContext;
     
     http.request( GET, JSON ) {
-      String strURI = '/v1/event?keptnContext=' . strKeptnContext . '&type=' . strKeptnEventType;
+      def strURI = '/v1/event?keptnContext=' + strKeptnContext + '&type=' + strKeptnEventType;
       echo "New URI: " + strURI;
      
       //http.setUri('/v1/event?keptnContext=' . strKeptnContext . '&type=' . strKeptnEventType);
