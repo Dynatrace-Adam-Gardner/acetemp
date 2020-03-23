@@ -121,7 +121,11 @@ def processEvent( Map args ) {
  //---------------------------------
  
   if ("GET" == strKeptnEventMethod) {  
-   try {  
+   try {
+    int iCount = 0;
+    while (returnValue.contains(500)) {
+     echo "[dt_processEvent.groovy] GET iteration count: " + iCount;
+     
     http.request( GET, JSON ) {
       uri.query = [ keptnContext:strKeptnContext, type: strKeptnEventType ]
       headers.'x-token' = strKeptnAPIToken
@@ -149,6 +153,9 @@ def processEvent( Map args ) {
      returnValue = e.getMessage();
      return -1;
    }
+    iCount++;
+    sleep(10000); // Sleep for 10s before trying again.
+   } // End while loop
 
   } // End if "GET" Keptn Event
  
