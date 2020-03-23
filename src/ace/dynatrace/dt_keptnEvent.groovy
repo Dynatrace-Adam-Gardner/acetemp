@@ -103,14 +103,14 @@ def processEvent( Map args ) {
     
      response.failure = { resp, json ->
        println "Failure: ${resp} ++ ${json}";
-       if (bDebug) echo "[dt_processEvent.groovy] Setting returnValue to: ${json}";
-       returnValue = json;
+       if (bDebug) echo "[dt_processEvent.groovy] Setting returnValue to: 'ERROR: SEND KEPTN EVENT FAILED'";
+       returnValue = 'ERROR: SEND KEPTN EVENT FAILED';
      }
     }
    }
     catch (Exception e) {
       echo "[dt_processEvent.groovy] SEND EVENT: Exception caught: " + e.getMessage();
-      returnValue = e.getMessage();
+      returnValue = 'ERROR: ' + e.getMessage();
     }
   if (bDebug) echo "[dt_processEvent.groovy] Returning: ${returnValue}";
   } // End if "SEND" Keptn Event
@@ -130,23 +130,23 @@ def processEvent( Map args ) {
       response.success = { resp, json ->
        if (bDebug) {
         echo "[dt_processEvent.groovy] Success: ${json}";
-        echo "[dt_processEvent.groovy] Setting returnValue to: ${json}";
+        //echo "[dt_processEvent.groovy] Setting returnValue to: ${json}";
        }
-        returnValue = json;
+        returnValue = [[key: 'foo', value: 'bar-success']];
       }
     
       response.failure = { resp, json ->
        if (bDebug) {
-        echo "[dt_processEvent.groovy] Failure: ${resp} ++ ${json}";
-        echo "[dt_processEvent.groovy] Setting returnValue to: ${json}";
+        //echo "[dt_processEvent.groovy] Failure: ${resp} ++ ${json}";
+        //echo "[dt_processEvent.groovy] Setting returnValue to: ${json}";
        }
-        returnValue = json;
+        returnValue = [[key: 'foo', value: 'bar-fail']];
        }
       }
    } // End try
    catch (Exception e) {
      echo "[dt_processEvent.groovy] GET EVENT: Exception caught: " + e.getMessage();
-     returnValue = e.getMessage();
+     returnValue = [[key: 'foo', value: 'bar-fail' + e.getMessage()]];
    }
   } // End if "GET" Keptn Event
  
