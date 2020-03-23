@@ -129,6 +129,8 @@ def processEvent( Map args ) {
       headers.'Content-Type' = 'application/json'
      
       echo "HTTP URI: " + http.getUri();
+      echo "HTTP Path: " + http.getUri().getPath();
+      echo "HTTP Query: " + http.getUri().getQuery();
       
       response.success = { resp, json ->
        if (bDebug) {
