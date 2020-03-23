@@ -121,19 +121,21 @@ def processEvent( Map args ) {
  
   if ("GET" == strKeptnEventMethod) {  
    try {
-     echo "[dt_processEvent.groovy] Keptn Context: " + strKeptnContext + "+END";
+     echo "[dt_processEvent.groovy] Keptn Context: " + strKeptnContext;
     
     http.request( GET, JSON ) {
       uri.query = [ keptnContext:strKeptnContext, type: strKeptnEventType ]
       headers.'x-token' = strKeptnAPIToken
       headers.'Content-Type' = 'application/json'
+     
+      echo "HTTP: " + http;
       
       response.success = { resp, json ->
        if (bDebug) {
         echo "[dt_processEvent.groovy] Success: ${json}";
         //echo "[dt_processEvent.groovy] Setting returnValue to: ${json}";
        }
-        returnValue = [[key: 'foo', value: 'bar-success']];
+        returnValue = [[key: 'foo', value: 'success']];
       }
     
       response.failure = { resp, json ->
@@ -141,13 +143,13 @@ def processEvent( Map args ) {
         echo "[dt_processEvent.groovy] Failure: ${json}";
         //echo "[dt_processEvent.groovy] Setting returnValue to: ${json}";
        }
-        returnValue = [[key: 'foo', value: 'bar-fail']];
+        returnValue = [[key: 'result', value: 'fail']];
        }
       }
    } // End try
    catch (Exception e) {
      echo "[dt_processEvent.groovy] GET EVENT: Exception caught: " + e.getMessage();
-     returnValue = [[key: 'foo', value: 'bar-fail' + e.getMessage()]];
+     returnValue = [[key: 'foo', value: 'fail' + e.getMessage()]];
    }
   } // End if "GET" Keptn Event
  
