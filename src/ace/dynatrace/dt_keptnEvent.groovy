@@ -128,7 +128,7 @@ def processEvent( Map args ) {
       headers.'x-token' = strKeptnAPIToken
       headers.'Content-Type' = 'application/json'
      
-      echo "HTTP: " + http;
+      echo "HTTP URI: " + http.getURI();
       
       response.success = { resp, json ->
        if (bDebug) {
