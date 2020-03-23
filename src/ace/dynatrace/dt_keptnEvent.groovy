@@ -111,7 +111,6 @@ def processEvent( Map args ) {
     catch (Exception e) {
       echo "[dt_processEvent.groovy] SEND EVENT: Exception caught: " + e.getMessage();
       returnValue = e.getMessage();
-      return -1;
     }
   if (bDebug) echo "[dt_processEvent.groovy] Returning: ${returnValue}";
   } // End if "SEND" Keptn Event
@@ -148,7 +147,6 @@ def processEvent( Map args ) {
    catch (Exception e) {
      echo "[dt_processEvent.groovy] GET EVENT: Exception caught: " + e.getMessage();
      returnValue = e.getMessage();
-     return -1;
    }
   } // End if "GET" Keptn Event
  
