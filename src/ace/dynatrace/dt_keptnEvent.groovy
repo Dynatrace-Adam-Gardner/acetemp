@@ -122,14 +122,6 @@ def processEvent( Map args ) {
  
   if ("GET" == strKeptnEventMethod) {  
    try {
-    int iCount = 0;
-    /* Loop until a valid result is returned.
-     * returnValue is empty on first iteration
-     */
-    while (returnValue == "" || returnValue.contains("500"))
-    {
-     echo "[dt_processEvent.groovy] WHILE STARTS HERE";
-     echo "[dt_processEvent.groovy] GET iteration count: " + iCount;
      
     http.request( GET, JSON ) {
       uri.query = [ keptnContext:strKeptnContext, type: strKeptnEventType ]
@@ -152,11 +144,6 @@ def processEvent( Map args ) {
         returnValue = json;
        }
       }
-     iCount++;
-     echo "Return Value is now #1: " + returnValue;
-     //sleep(10); // Sleep for 10s before trying again.
-     echo "Return Value is now #2: " + returnValue;
-    } // End while loop
    } // End try
    catch (Exception e) {
      echo "[dt_processEvent.groovy] GET EVENT: Exception caught: " + e.getMessage();
