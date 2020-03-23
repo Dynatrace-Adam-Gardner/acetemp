@@ -121,7 +121,8 @@ def processEvent( Map args ) {
  
   if ("GET" == strKeptnEventMethod) {  
    try {
-     
+     echo "[dt_processEvent.groovy] Keptn Context: " + strKeptnContext + "+END";
+    
     http.request( GET, JSON ) {
       uri.query = [ keptnContext:strKeptnContext, type: strKeptnEventType ]
       headers.'x-token' = strKeptnAPIToken
