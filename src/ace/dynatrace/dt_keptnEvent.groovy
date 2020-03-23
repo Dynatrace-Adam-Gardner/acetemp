@@ -128,6 +128,7 @@ def processEvent( Map args ) {
      */
     while (returnValue == "" || returnValue.contains("500"))
     {
+     echo "[dt_processEvent.groovy] HERE 1";
      sleep(10);
      echo "[dt_processEvent.groovy] GET iteration count: " + iCount;
      
