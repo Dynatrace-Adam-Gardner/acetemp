@@ -127,6 +127,7 @@ def processEvent( Map args ) {
       def strURI = '/v1/event?keptnContext=' + strKeptnContext + '&type=' + strKeptnEventType;
       echo "New URI: " + strURI;
      
+      echo "HTTP URI: " + http.getUri();
       http.setUri(strURI);
       //uri.query = [ keptnContext:strKeptnContext, type:strKeptnEventType ];
       headers.'x-token' = strKeptnAPIToken;
