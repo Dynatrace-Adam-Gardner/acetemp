@@ -121,8 +121,15 @@ def processEvent( Map args ) {
  
   if ("GET" == strKeptnEventMethod) {  
    try {
+
+     int iResult = -1;
+
      echo "[dt_processEvent.groovy] Keptn Context: " + strKeptnContext;
     
+     while (iResult == -1 || iResult == 500) {
+    
+     echo "iResult: " + iResult;
+     
      http.request( GET, JSON ) {
      
       uri.query = [ keptnContext: strKeptnContext + "x", type: strKeptnEventType ]
@@ -130,9 +137,9 @@ def processEvent( Map args ) {
       headers.'Content-Type' = 'application/json';
       
       response.success = { resp, json ->
-       if (bDebug) {
-        echo "[dt_processEvent.groovy] Success: ${json}";
-       }
+       if (bDebug) echo "[dt_processEvent.groovy] Success: ${json}";
+       
+       iResult = json.code;
        returnValue = [ [key: 'foo', value: 'success'], [key: 'keptnResult', value: "${json.data.result}"] ];
       }
     
@@ -141,13 +148,13 @@ def processEvent( Map args ) {
         echo "[dt_processEvent.groovy] Failure: ${resp} ++ ${json}";
         echo "[dt_processEvent.groovy] Setting returnValue to: ${json}";
         echo "[dt_processEvent.groovy] Code: ${json.code}";
-        if (json.code == 500) echo "HERE 1";
-        else if (json.code == "500") echo "HERE 2";
-        else echo "Something else: ${json.code}";
        }
+        iResult = json.code;
         returnValue = [[key: 'result', value: 'fail']];
        }
-      }
+      } // end http GET
+      sleep 10; // Sleep for 10s before retrying the http GET
+    } // end while loop
    } // End try
    catch (Exception e) {
      echo "[dt_processEvent.groovy] GET EVENT: Exception caught: " + e.getMessage();
