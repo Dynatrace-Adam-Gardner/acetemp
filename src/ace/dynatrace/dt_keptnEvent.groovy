@@ -5,7 +5,7 @@ import groovy.json.JsonOutput
 import static groovyx.net.http.Method.*
 import static groovyx.net.http.ContentType.*
 
-//@NonCPS
+@NonCPS
 def processEvent( Map args ) {
  
  /* -- Inputs --
