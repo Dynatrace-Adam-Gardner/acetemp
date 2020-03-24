@@ -141,6 +141,9 @@ def processEvent( Map args ) {
         echo "[dt_processEvent.groovy] Failure: ${resp} ++ ${json}";
         echo "[dt_processEvent.groovy] Setting returnValue to: ${json}";
         echo "[dt_processEvent.groovy] Code: ${json.code}";
+        if (json.code == 500) echo "HERE 1";
+        else if (json.code == "500") echo "HERE 2";
+        else echo "Something else: ${json.code}";
        }
         returnValue = [[key: 'result', value: 'fail']];
        }
