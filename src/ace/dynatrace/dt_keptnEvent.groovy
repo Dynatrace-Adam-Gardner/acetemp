@@ -123,7 +123,7 @@ def processEvent( Map args ) {
    try {
      echo "[dt_processEvent.groovy] Keptn Context: " + strKeptnContext;
     
-     def this = 'that';
+     String this = 'that';
      http.request( GET, JSON ) {
      
       echo "This: " + this;
