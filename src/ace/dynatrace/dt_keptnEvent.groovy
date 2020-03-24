@@ -123,10 +123,10 @@ def processEvent( Map args ) {
    try {
      echo "[dt_processEvent.groovy] Keptn Context: " + strKeptnContext;
     
-     String this = 'that';
+     String thdsfis = "that";
      http.request( GET, JSON ) {
      
-      echo "This: " + this;
+      echo "This: " + thdsfis;
       uri.query = [ foo: 'bar' ];
       //uri.query = [ foo: 'bar', foo2: this];
       headers.'x-token' = strKeptnAPIToken;
