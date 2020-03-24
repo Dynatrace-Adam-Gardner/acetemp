@@ -123,9 +123,9 @@ def processEvent( Map args ) {
    try {
      echo "[dt_processEvent.groovy] Keptn Context: " + strKeptnContext;
     
-    http.request( GET, JSON ) {
+     def this = 'that';
+     http.request( GET, JSON ) {
      
-      String this = 'that';
       echo "This: " + this;
       uri.query = [ foo: 'bar' ];
       //uri.query = [ foo: 'bar', foo2: this];
