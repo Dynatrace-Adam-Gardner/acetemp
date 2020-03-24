@@ -110,7 +110,7 @@ def processEvent( Map args ) {
    }
     catch (Exception e) {
       echo "[dt_processEvent.groovy] SEND EVENT: Exception caught: " + e.getMessage();
-      returnValue = [[key: 'result', value: 'fail'], [key: 'error', value: 'ERROR: ' + e.getMessage(); ]];
+      returnValue = [[key: 'result', value: 'fail'], [key: 'error', value: 'ERROR: ' + e.getMessage() ]];
       returnValue = 'ERROR: ' + e.getMessage();
     }
   } // End if "SEND" Keptn Event
