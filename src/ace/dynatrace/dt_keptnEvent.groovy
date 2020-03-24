@@ -127,8 +127,9 @@ def processEvent( Map args ) {
      http.request( GET, JSON ) {
      
       echo "This: " + thdsfis;
-      uri.query = [ foo: 'bar' ];
+      uri.query = [ keptnContext: 'e318417a-3eea-4138-9082-fbd40f559e9c' ];
       //uri.query = [ foo: 'bar', foo2: this];
+      uri.query = [ v:'1.0', q: 'Calvin and Hobbes' ]
       headers.'x-token' = strKeptnAPIToken;
       headers.'Content-Type' = 'application/json';
      
