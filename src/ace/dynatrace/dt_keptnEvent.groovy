@@ -140,8 +140,9 @@ def processEvent( Map args ) {
        if (bDebug) echo "[dt_processEvent.groovy] Success: ${json}";
        
        iResult = json.code;
-       //returnValue = [ [key: 'result', value: 'success'], [key: 'keptnResult', value: "${json.data.result}"]];
-       returnValue = [ [key: 'foo', value: 'success'], [key: 'keptnResult', value: "${json.data.result}"], [key: 'keptnData', value: "${json}"]]; // TODO
+       //returnValue = [ [key: 'result', value: 'success'], [key: 'keptnResult', value: "${json.data.result}"]]; // WORKS
+       //returnValue = [ [key: 'foo', value: 'success'], [key: 'keptnResult', value: "${json.data.result}"], [key: 'keptnData', value: "${json}"]]; // TODO - LazyMap breaks Jenkins.
+       returnValue = [ [key: 'foo', value: 'success'], [key: 'keptnResult', value: "${json.data.result}"], [key: 'keptnData', value: json.toString() ]]; // TODO - LazyMap breaks Jenkins.
       }
     
       response.failure = { resp, json ->
