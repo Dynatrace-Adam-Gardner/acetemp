@@ -140,7 +140,8 @@ def processEvent( Map args ) {
        if (bDebug) echo "[dt_processEvent.groovy] Success: ${json}";
        
        iResult = json.code;
-       returnValue = [ [key: 'foo', value: 'success'], [key: 'keptnResult', value: "${json.data.result}"] ];
+       returnValue = [ [key: 'result', value: 'success'], [key: 'keptnResult', value: "${json.data.result}"]];
+       //returnValue = [ [key: 'foo', value: 'success'], [key: 'keptnResult', value: "${json.data.result}"], [key: 'keptnData', value: "${json}"]]; // TODO
       }
     
       response.failure = { resp, json ->
@@ -153,7 +154,12 @@ def processEvent( Map args ) {
         returnValue = [[key: 'result', value: 'fail']];
        }
       } // end http GET
-      Thread.sleep(10000); // Sleep for 10s before retrying the http GET
+      
+      // If we're still waiting for the keptn event, sleep for 10s then retry.
+      if (iResult == 500) {
+       echo "[dt_processEvent.groovy] Still waiting for keptn event. Script will sleep for 10s then try again";
+       Thread.sleep(10000); // Sleep for 10s before retrying the http GET
+      }
     } // end while loop
    } // End try
    catch (Exception e) {
