@@ -104,15 +104,15 @@ def processEvent( Map args ) {
      response.failure = { resp, json ->
        println "Failure: ${resp} ++ ${json}";
        if (bDebug) echo "[dt_processEvent.groovy] Setting returnValue to: 'ERROR: SEND KEPTN EVENT FAILED'";
-       returnValue = 'ERROR: SEND KEPTN EVENT FAILED';
+       returnValue = [[key: 'result', value: 'fail'], [key: 'error', value: 'ERROR: SEND KEPTN EVENT FAILED']];
      }
     }
    }
     catch (Exception e) {
       echo "[dt_processEvent.groovy] SEND EVENT: Exception caught: " + e.getMessage();
+      returnValue = [[key: 'result', value: 'fail'], [key: 'error', value: 'ERROR: ' + e.getMessage(); ]];
       returnValue = 'ERROR: ' + e.getMessage();
     }
-  if (bDebug) echo "[dt_processEvent.groovy] Returning: ${returnValue}";
   } // End if "SEND" Keptn Event
  
  //---------------------------------
@@ -128,11 +128,11 @@ def processEvent( Map args ) {
     
      while (iResult == -1 || iResult == 500) {
     
-     echo "iResult: " + iResult;
+     if (bDebug) echo "iResult: " + iResult;
      
      http.request( GET, JSON ) {
      
-      uri.query = [ keptnContext: strKeptnContext + "x", type: strKeptnEventType ]
+      uri.query = [ keptnContext: strKeptnContext, type: strKeptnEventType ]
       headers.'x-token' = strKeptnAPIToken;
       headers.'Content-Type' = 'application/json';
       
@@ -151,7 +151,7 @@ def processEvent( Map args ) {
         echo "[dt_processEvent.groovy] Code: ${json.code}";
        }
         iResult = json.code;
-        returnValue = [[key: 'result', value: 'fail']];
+        returnValue = [[key: 'result', value: 'fail'], [key: 'error', value: 'ERROR: ' + json ]];
        }
       } // end http GET
       
@@ -164,7 +164,7 @@ def processEvent( Map args ) {
    } // End try
    catch (Exception e) {
      echo "[dt_processEvent.groovy] GET EVENT: Exception caught: " + e.getMessage();
-     returnValue = [[key: 'foo', value: 'fail' + e.getMessage()]];
+     returnValue = [[key: 'result', value: 'fail' + e.getMessage()]];
    }
   } // End if "GET" Keptn Event
  
