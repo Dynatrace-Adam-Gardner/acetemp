@@ -123,18 +123,11 @@ def processEvent( Map args ) {
    try {
      echo "[dt_processEvent.groovy] Keptn Context: " + strKeptnContext;
     
-     //http.setUri(strKeptnURL + '/v1/event?keptnContext=' + strKeptnContext + '&type=' + strKeptnEventType);
-    
      http.request( GET, JSON ) {
      
       uri.query = [ keptnContext: strKeptnContext, type: strKeptnEventType ]
       headers.'x-token' = strKeptnAPIToken;
       headers.'Content-Type' = 'application/json';
-     
-      echo "HTTP URI: " + http.getUri();
-      echo "HTTP Headers: " + http.headers;
-      echo "HTTP Path: " + http.getUri().getPath();
-      echo "HTTP Query: " + http.getUri().getQuery();
       
       response.success = { resp, json ->
        if (bDebug) {
@@ -147,6 +140,7 @@ def processEvent( Map args ) {
        if (bDebug) {
         echo "[dt_processEvent.groovy] Failure: ${resp} ++ ${json}";
         echo "[dt_processEvent.groovy] Setting returnValue to: ${json}";
+        echo "[dt_processEvent.groovy] Code: ${json.code}";
        }
         returnValue = [[key: 'result', value: 'fail']];
        }
