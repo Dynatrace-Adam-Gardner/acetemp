@@ -153,7 +153,7 @@ def processEvent( Map args ) {
         returnValue = [[key: 'result', value: 'fail']];
        }
       } // end http GET
-      sleep 10; // Sleep for 10s before retrying the http GET
+      Thread.sleep(10000); // Sleep for 10s before retrying the http GET
     } // end while loop
    } // End try
    catch (Exception e) {
