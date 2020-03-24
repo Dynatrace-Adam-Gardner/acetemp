@@ -111,7 +111,6 @@ def processEvent( Map args ) {
     catch (Exception e) {
       echo "[dt_processEvent.groovy] SEND EVENT: Exception caught: " + e.getMessage();
       returnValue = [[key: 'result', value: 'fail'], [key: 'error', value: 'ERROR: ' + e.getMessage() ]];
-      returnValue = 'ERROR: ' + e.getMessage();
     }
   } // End if "SEND" Keptn Event
  
@@ -124,7 +123,7 @@ def processEvent( Map args ) {
 
      int iResult = -1;
 
-     echo "[dt_processEvent.groovy] Keptn Context: " + strKeptnContext;
+     if (bDebug) echo "[dt_processEvent.groovy] Keptn Context: " + strKeptnContext;
     
      while (iResult == -1 || iResult == 500) {
     
@@ -141,8 +140,8 @@ def processEvent( Map args ) {
        
        iResult = json.code;
        //returnValue = [ [key: 'result', value: 'success'], [key: 'keptnResult', value: "${json.data.result}"]]; // WORKS
-       //returnValue = [ [key: 'foo', value: 'success'], [key: 'keptnResult', value: "${json.data.result}"], [key: 'keptnData', value: "${json}"]]; // TODO - LazyMap breaks Jenkins.
-       returnValue = [ [key: 'foo', value: 'success'], [key: 'keptnResult', value: "${json.data.result}"], [key: 'keptnData', value: json.toString() ]]; // TODO - LazyMap breaks Jenkins.
+       //returnValue = [ [key: 'result', value: 'success'], [key: 'keptnResult', value: "${json.data.result}"], [key: 'keptnData', value: "${json}"]]; // TODO - LazyMap breaks Jenkins.
+       returnValue = [ [key: 'result', value: 'success'], [key: 'keptnResult', value: "${json.data.result}"], [key: 'keptnData', value: json.toString() ]]; // WORKS
       }
     
       response.failure = { resp, json ->
