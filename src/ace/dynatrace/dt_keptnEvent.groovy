@@ -125,7 +125,8 @@ def processEvent( Map args ) {
     
     http.request( GET, JSON ) {
      
-      def this = 'that';
+      String this = 'that';
+      echo "This: " + this;
       uri.query = [ foo: 'bar' ];
       //uri.query = [ foo: 'bar', foo2: this];
       headers.'x-token' = strKeptnAPIToken;
