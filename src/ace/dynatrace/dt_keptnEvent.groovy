@@ -119,13 +119,15 @@ def processEvent( Map args ) {
      response.failure = { resp, json ->
        println "Failure: ${resp} ++ ${json}";
        if (bDebug) echo "[dt_processEvent.groovy] Setting returnValue to: 'ERROR: SEND KEPTN EVENT FAILED'";
-      returnValue = [[key: 'result', value: 'fail'], [key: 'data', value: 'ERROR: SEND KEPTN EVENT FAILED']];
+       returnValue = [ "result": "fail", "data": "ERROR: SEND KEPTN EVENT FAILED" ];
      }
     }
    }
     catch (Exception e) {
       echo "[dt_processEvent.groovy] SEND EVENT: Exception caught: " + e.getMessage();
-     returnValue = [[key: 'result', value: 'fail'], [key: 'data', value: 'ERROR: ' + e.getMessage() ]];
+     //returnValue = [[key: 'result', value: 'fail'], [key: 'data', value: 'ERROR: ' + e.getMessage() ]];
+     returnValue = [ "result": "fail", "data": "ERROR: " + e.getMessage() ];
+     
     }
   } // End if "SEND" Keptn Event
  
@@ -163,11 +165,13 @@ def processEvent( Map args ) {
        if (json.code != 500) iIterationCount = 10000;
        
        returnValue = [ [key: 'result', value: 'success'], [key: 'data', value: "${json}"], [key: 'keptnResult', value: "${json.data.result}"]];
+       returnValue = [ "result": "success", "data": json, "keptnResult": json.data.result ];
       }
     
       response.failure = { resp, json ->
         if (bDebug) echo "[dt_processEvent.groovy] Setting returnValue to: ${json}";
-        returnValue = [[key: 'result', value: 'fail'], [key: 'data', value: 'ERROR: ' + json ]];
+        //returnValue = [[key: 'result', value: 'fail'], [key: 'data', value: 'ERROR: ' + json ]];
+        returnValue = [ "result": "fail", "data": "ERROR: " + json ];
        }
       } // end http GET
       
@@ -185,12 +189,10 @@ def processEvent( Map args ) {
    } // End try
    catch (Exception e) {
      echo "[dt_processEvent.groovy] GET EVENT: Exception caught: " + e.getMessage();
-     returnValue = [[key: 'result', value: 'fail'], [key: 'data', value: e.getMessage()]];
+     //returnValue = [[key: 'result', value: 'fail'], [key: 'data', value: e.getMessage()]];
+     returnValue = [ "result": "fail", "data": "ERROR: " + e.getMessage()];
    }
   } // End if "GET" Keptn Event
   
-  echo "-------------------";
-  echo returnValue.toString();
-  echo "-------------------";
   return returnValue;
 }
