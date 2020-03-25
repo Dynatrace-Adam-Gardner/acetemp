@@ -164,7 +164,10 @@ def processEvent( Map args ) {
       } // end http GET
       
       // If, at this point, we have a valid result iIterationCount will be 10000, so if we're still waiting for the keptn event, sleep for 10s then retry.
-      if (iIterationCount <= iMaxIterations) {
+      if (iIterationCount >= iMaxIterations) {
+        echo "[dt_processEvent.groovy] Got a valid result or reached the timeout. Returning to pipeline...";
+      }
+      else if (iIterationCount <= iMaxIterations) {
        echo "[dt_processEvent.groovy] Still waiting for keptn event. Script will sleep for 10s then try again";
        Thread.sleep(10000); // Sleep for 10s before retrying the http GET
       }
