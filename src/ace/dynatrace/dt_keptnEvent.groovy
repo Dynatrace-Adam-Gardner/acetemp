@@ -66,6 +66,7 @@ def processEvent( Map args ) {
    echo "[dt_processEvent.groovy] Start Time is: " + strStartTime;
    echo "[dt_processEvent.groovy] End Time is: " + strEndTime;
    echo "[dt_processEvent.groovy] Timeframe is: " + strTimeframe;
+   echo "[dt_processEvent.groovy] Timeout is: " + strTimeframe;
  }
  
  // TODO - Error Checking
