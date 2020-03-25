@@ -5,6 +5,19 @@ import groovy.json.JsonOutput
 import static groovyx.net.http.Method.*
 import static groovyx.net.http.ContentType.*
 
+/*
+ * This method is used to SEND or GET a keptn event
+ * The result will always contain two key:value pairs.
+ * The first K/V pair is 'result' which is either 'success' or 'fail'.
+ * The second K/V pair is 'data' which is either:
+ *   - The keptn return data (for 'result: success) or
+ *   - The error message (for 'result: fail)
+ *
+ * Also note that there is a convenience / helper return K/V to judge the Keptn result.
+ * This is only returned for the GET calls and only when the call didn't fail.
+ * This Key for this K/V is 'keptnResult'. It provides the output of the Keptn evaluation (pass, warning or fail)
+ * Note that the raw Keptn data is still returned in the 'data' Key.
+ */
 @NonCPS
 def processEvent( Map args ) {
  
@@ -50,7 +63,7 @@ def processEvent( Map args ) {
  String strStartTime = args.containsKey("start_time") ? args.start_time : "${START_TIME}";
  String strEndTime = args.containsKey("end_time") ? args.end_time : "${END_TIME}";
  String strTimeframe = args.containsKey("timeframe") ? args.timeframe : "${TIMEFRAME}";
- int iTimeout = args.containsKey("timeout") ? args.timeout : 30;
+ int iTimeout = args.containsKey("timeout") ? args.timeout : 30; // Default timeout is 30 seconds
  boolean bDebug = args.containsKey("debug_mode") ? args.debug_mode : false;
  
  echo "[dt_processEvent.groovy] Debug Mode: " + bDebug;
@@ -98,23 +111,20 @@ def processEvent( Map args ) {
           ]
       ]
      response.success = { resp, json ->
-      if (bDebug) {
-        echo "[dt_processEvent.groovy] Success: ${json} ++ Keptn Context: ${json.keptnContext}";
-        echo "[dt_processEvent.groovy] Setting returnValue to: ${json.keptnContext}";
-      }
-       returnValue = json.keptnContext;
+      if (bDebug) echo "[dt_processEvent.groovy] Success: ${json} ++ Keptn Context: ${json.keptnContext}";
+       returnValue = [[key: 'result', value: 'fail'], [key: 'data', value: json.keptnContext]];
      }
     
      response.failure = { resp, json ->
        println "Failure: ${resp} ++ ${json}";
        if (bDebug) echo "[dt_processEvent.groovy] Setting returnValue to: 'ERROR: SEND KEPTN EVENT FAILED'";
-       returnValue = [[key: 'result', value: 'fail'], [key: 'error', value: 'ERROR: SEND KEPTN EVENT FAILED']];
+       returnValue = [[key: 'result', value: 'fail'], [key: 'data', value: 'ERROR: SEND KEPTN EVENT FAILED']];
      }
     }
    }
     catch (Exception e) {
       echo "[dt_processEvent.groovy] SEND EVENT: Exception caught: " + e.getMessage();
-      returnValue = [[key: 'result', value: 'fail'], [key: 'error', value: 'ERROR: ' + e.getMessage() ]];
+      returnValue = [[key: 'result', value: 'fail'], [key: 'data', value: 'ERROR: ' + e.getMessage() ]];
     }
   } // End if "SEND" Keptn Event
  
@@ -139,8 +149,7 @@ def processEvent( Map args ) {
      
      http.request( GET, JSON ) {
      
-      //uri.query = [ keptnContext: strKeptnContext, type: strKeptnEventType ] // Works
-      uri.query = [ keptnContext: strKeptnContext + "x", type: strKeptnEventType ] // Temp - test timeout logic
+      uri.query = [ keptnContext: strKeptnContext, type: strKeptnEventType ]
       headers.'x-token' = strKeptnAPIToken;
       headers.'Content-Type' = 'application/json';
       
@@ -148,21 +157,16 @@ def processEvent( Map args ) {
        if (bDebug) echo "[dt_processEvent.groovy] Success: ${json}";
        
        /* An HTTP 500 code is given if we're still waiting for the keptn Event.
-        * If we have a valid return code, set the iteration count high so we break out of the loop
-        * and return values to the user.
+        * If we have a valid return code, set the iteration count to something arbitrarily high so we break out of the loop and return values to the user.
         */
        if (json.code != 500) iIterationCount = 10000;
        
-       returnValue = [ [key: 'result', value: 'success'], [key: 'keptnResult', value: "${json.data.result}"], [key: 'keptnData', value: json.toString() ]]; // WORKS
+       returnValue = [ [key: 'result', value: 'success'], [key: 'data', value: json.toString() ], [key: 'keptnResult', value: "${json.data.result}"]];
       }
     
       response.failure = { resp, json ->
-       if (bDebug) {
-        echo "[dt_processEvent.groovy] Failure: ${resp} ++ ${json}";
-        echo "[dt_processEvent.groovy] Setting returnValue to: ${json}";
-        echo "[dt_processEvent.groovy] Code: ${json.code}";
-       }
-        returnValue = [[key: 'result', value: 'fail'], [key: 'error', value: 'ERROR: ' + json ]];
+        if (bDebug) echo "[dt_processEvent.groovy] Setting returnValue to: ${json}";
+        returnValue = [[key: 'result', value: 'fail'], [key: 'data', value: 'ERROR: ' + json ]];
        }
       } // end http GET
       
@@ -180,7 +184,7 @@ def processEvent( Map args ) {
    } // End try
    catch (Exception e) {
      echo "[dt_processEvent.groovy] GET EVENT: Exception caught: " + e.getMessage();
-     returnValue = [[key: 'result', value: 'fail' + e.getMessage()]];
+     returnValue = [[key: 'result', value: 'fail'], [key: 'data', value: e.getMessage()]];
    }
   } // End if "GET" Keptn Event
  
