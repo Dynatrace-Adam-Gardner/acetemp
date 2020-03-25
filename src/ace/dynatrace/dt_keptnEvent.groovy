@@ -164,7 +164,7 @@ def processEvent( Map args ) {
         */
        if (json.code != 500) iIterationCount = 10000;
        
-       returnValue = [ [key: 'result', value: 'success'], [key: 'data', value: "${json}"], [key: 'keptnResult', value: "${json.data.result}"]];
+       //returnValue = [ [key: 'result', value: 'success'], [key: 'data', value: "${json}"], [key: 'keptnResult', value: "${json.data.result}"]];
        returnValue = [ "result": "success", "data": json, "keptnResult": json.data.result ];
       }
     
