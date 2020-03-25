@@ -21,6 +21,7 @@ def processEvent( Map args ) {
    'end_time' // Format: "2020-03-20T11:36:31"
    'timeframe' // Minimum is 2m (2 minutes)
    'debug_mode' // boolean
+   'timeout' // timeout in seconds. Default = 30s
     
    -- Variables --
    String strKeptnURL;
@@ -49,6 +50,7 @@ def processEvent( Map args ) {
  String strEndTime = args.containsKey("end_time") ? args.end_time : "${END_TIME}";
  String strTimeframe = args.containsKey("timeframe") ? args.timeframe : "${TIMEFRAME}";
  boolean bDebug = args.containsKey("debug_mode") ? args.debug_mode : false;
+ int iTimeout = args.containsKey("timeout") ? args.timeout : 30;
  
  echo "[dt_processEvent.groovy] Debug Mode: " + bDebug;
  
@@ -121,13 +123,14 @@ def processEvent( Map args ) {
   if ("GET" == strKeptnEventMethod) {  
    try {
 
-     int iResult = -1;
-
+     int iIterationCount = 1;
+     int iMaxIterations = (int) (iTimeout / 10);
+     echo "Max Iterations = " + iMaxIterations;
+    
      if (bDebug) echo "[dt_processEvent.groovy] Keptn Context: " + strKeptnContext;
     
-     while (iResult == -1 || iResult == 500) {
-    
-     if (bDebug) echo "iResult: " + iResult;
+     while (iIterationCount <= iMaxIterations) {
+      echo "Iteration Count: " + iIterationCount;
      
      http.request( GET, JSON ) {
      
@@ -138,9 +141,12 @@ def processEvent( Map args ) {
       response.success = { resp, json ->
        if (bDebug) echo "[dt_processEvent.groovy] Success: ${json}";
        
-       iResult = json.code;
-       //returnValue = [ [key: 'result', value: 'success'], [key: 'keptnResult', value: "${json.data.result}"]]; // WORKS
-       //returnValue = [ [key: 'result', value: 'success'], [key: 'keptnResult', value: "${json.data.result}"], [key: 'keptnData', value: "${json}"]]; // TODO - LazyMap breaks Jenkins.
+       /* An HTTP 500 code is given if we're still waiting for the keptn Event.
+        * If we have a valid return code, set the iteration count high so we break out of the loop
+        * and return values to the user.
+        */
+       if (json.code != 500) iIterationCount = 10000;
+       
        returnValue = [ [key: 'result', value: 'success'], [key: 'keptnResult', value: "${json.data.result}"], [key: 'keptnData', value: json.toString() ]]; // WORKS
       }
     
@@ -150,7 +156,6 @@ def processEvent( Map args ) {
         echo "[dt_processEvent.groovy] Setting returnValue to: ${json}";
         echo "[dt_processEvent.groovy] Code: ${json.code}";
        }
-        iResult = json.code;
         returnValue = [[key: 'result', value: 'fail'], [key: 'error', value: 'ERROR: ' + json ]];
        }
       } // end http GET
@@ -160,6 +165,8 @@ def processEvent( Map args ) {
        echo "[dt_processEvent.groovy] Still waiting for keptn event. Script will sleep for 10s then try again";
        Thread.sleep(10000); // Sleep for 10s before retrying the http GET
       }
+      
+      iIterationCount++;
     } // end while loop
    } // End try
    catch (Exception e) {
