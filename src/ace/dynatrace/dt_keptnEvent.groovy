@@ -112,19 +112,19 @@ def processEvent( Map args ) {
       ]
      response.success = { resp, json ->
       if (bDebug) echo "[dt_processEvent.groovy] Success: ${json} ++ Keptn Context: ${json.keptnContext}";
-       returnValue = [[key: 'result', value: 'fail'], [key: 'data', value: json.keptnContext]];
+      returnValue = [{key: 'result', value: 'success'}, {key: 'data', value: json.keptnContext}];
      }
     
      response.failure = { resp, json ->
        println "Failure: ${resp} ++ ${json}";
        if (bDebug) echo "[dt_processEvent.groovy] Setting returnValue to: 'ERROR: SEND KEPTN EVENT FAILED'";
-       returnValue = [[key: 'result', value: 'fail'], [key: 'data', value: 'ERROR: SEND KEPTN EVENT FAILED']];
+      returnValue = [{key: 'result', value: 'fail'}, {key: 'data', value: 'ERROR: SEND KEPTN EVENT FAILED'}];
      }
     }
    }
     catch (Exception e) {
       echo "[dt_processEvent.groovy] SEND EVENT: Exception caught: " + e.getMessage();
-      returnValue = [[key: 'result', value: 'fail'], [key: 'data', value: 'ERROR: ' + e.getMessage() ]];
+     returnValue = [{key: 'result', value: 'fail'}, {key: 'data', value: 'ERROR: ' + e.getMessage() }];
     }
   } // End if "SEND" Keptn Event
  
