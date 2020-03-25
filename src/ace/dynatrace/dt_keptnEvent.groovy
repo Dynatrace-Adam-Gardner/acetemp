@@ -190,7 +190,7 @@ def processEvent( Map args ) {
   } // End if "GET" Keptn Event
   
   echo "-------------------";
-  echo returnValue;
+  echo returnValue.toString();
   echo "-------------------";
   return returnValue;
 }
