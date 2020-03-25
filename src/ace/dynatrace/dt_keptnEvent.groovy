@@ -126,7 +126,10 @@ def processEvent( Map args ) {
    try {
 
      int iIterationCount = 1;
-     int iMaxIterations = (int) (iTimeout / 10);
+     /* Max iterations is timeout in seconds + 1.
+      * If it wasn't +1 we'd sleep and not test the final time.
+      */
+     int iMaxIterations = (int) (iTimeout / 10) + 1;
      echo "Max Iterations = " + iMaxIterations;
     
      if (bDebug) echo "[dt_processEvent.groovy] Keptn Context: " + strKeptnContext;
@@ -164,7 +167,7 @@ def processEvent( Map args ) {
       } // end http GET
       
       // If, at this point, we have a valid result iIterationCount will be 10000, so if we're still waiting for the keptn event, sleep for 10s then retry.
-      if (iIterationCount > iMaxIterations) {
+      if (iIterationCount >= iMaxIterations) {
         echo "[dt_processEvent.groovy] Got a valid result or reached the timeout. Returning to pipeline...";
       }
       else if (iIterationCount < iMaxIterations) {
