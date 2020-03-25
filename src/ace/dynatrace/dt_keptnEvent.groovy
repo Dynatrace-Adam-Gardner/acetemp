@@ -136,7 +136,8 @@ def processEvent( Map args ) {
      
      http.request( GET, JSON ) {
      
-      uri.query = [ keptnContext: strKeptnContext, type: strKeptnEventType ]
+      //uri.query = [ keptnContext: strKeptnContext, type: strKeptnEventType ] // Works
+      uri.query = [ keptnContext: strKeptnContext + "x", type: strKeptnEventType ] // Temp - test timeout logic
       headers.'x-token' = strKeptnAPIToken;
       headers.'Content-Type' = 'application/json';
       
