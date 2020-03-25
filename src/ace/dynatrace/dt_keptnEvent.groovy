@@ -35,6 +35,7 @@ def processEvent( Map args ) {
    String strStartTime;
    String strEndTime;
    String strTimeframe;
+   int iTimeout;
    boolean bDebug;
  */
  
@@ -49,8 +50,8 @@ def processEvent( Map args ) {
  String strStartTime = args.containsKey("start_time") ? args.start_time : "${START_TIME}";
  String strEndTime = args.containsKey("end_time") ? args.end_time : "${END_TIME}";
  String strTimeframe = args.containsKey("timeframe") ? args.timeframe : "${TIMEFRAME}";
- boolean bDebug = args.containsKey("debug_mode") ? args.debug_mode : false;
  int iTimeout = args.containsKey("timeout") ? args.timeout : 30;
+ boolean bDebug = args.containsKey("debug_mode") ? args.debug_mode : false;
  
  echo "[dt_processEvent.groovy] Debug Mode: " + bDebug;
  
@@ -73,7 +74,7 @@ def processEvent( Map args ) {
  
   def returnValue = "";
   def http = new HTTPBuilder( strKeptnURL + '/v1/event' );
-  http.ignoreSSLIssues(); // TODO - REMOVE?
+  if (bDebug) http.ignoreSSLIssues();
 
  //----------------------------------
  //-------- SEND KEPTN EVENT --------
