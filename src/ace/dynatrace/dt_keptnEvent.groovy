@@ -114,7 +114,7 @@ def processEvent( Map args ) {
      response.success = { resp, json ->
       if (bDebug) echo "[dt_processEvent.groovy] Success: ${json} ++ Keptn Context: ${json.keptnContext}";
       //returnValue = [[key: 'result', value: 'success'], [key: 'data', value: json.keptnContext]];
-      returnValue = "{ "result": "success", "data": "${json.keptnContext}" }";
+      returnValue = '{ "result": "success", "data": "${json.keptnContext}" }';
      }
     
      response.failure = { resp, json ->
@@ -190,11 +190,11 @@ def processEvent( Map args ) {
    }
   } // End if "GET" Keptn Event
   
-  //def slurper = new groovy.json.JsonSlurper();
-  //def returnJSON = slurper.parseText(returnValue);
-  //echo "-------------------";
-  //echo returnJSON;
-  echo returnValue;
+  def slurper = new groovy.json.JsonSlurper();
+  def returnJSON = slurper.parseText(returnValue);
+  echo "-------------------";
+  echo returnJSON;
+  //echo returnValue;
   echo "-------------------";
   return returnValue;
 }
