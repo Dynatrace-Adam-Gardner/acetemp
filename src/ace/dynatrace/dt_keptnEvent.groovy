@@ -113,7 +113,7 @@ def processEvent( Map args ) {
       ]
      response.success = { resp, json ->
       if (bDebug) echo "[dt_processEvent.groovy] Success: ${json} ++ Keptn Context: ${json.keptnContext}";
-      returnValue = [ "result": "success", "data": json.keptnContext ];
+      returnValue = [ "result": "success", "data": "${json.keptnContext}" ];
      }
     
      response.failure = { resp, json ->
@@ -165,13 +165,13 @@ def processEvent( Map args ) {
        if (json.code != 500) iIterationCount = 10000;
        
        //returnValue = [ [key: 'result', value: 'success'], [key: 'data', value: "${json}"], [key: 'keptnResult', value: "${json.data.result}"]];
-       returnValue = [ "result": "success", "data": json, "keptnResult": json.data.result ];
+       returnValue = [ "result": "success", "data": "${json}", "keptnResult": "${json.data.result}" ];
       }
     
       response.failure = { resp, json ->
         if (bDebug) echo "[dt_processEvent.groovy] Setting returnValue to: ${json}";
         //returnValue = [[key: 'result', value: 'fail'], [key: 'data', value: 'ERROR: ' + json ]];
-        returnValue = [ "result": "fail", "data": "ERROR: " + json ];
+       returnValue = [ "result": "fail", "data": "ERROR: ${json}" ];
        }
       } // end http GET
       
