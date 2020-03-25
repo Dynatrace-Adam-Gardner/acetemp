@@ -1,7 +1,8 @@
 @Grab('org.codehaus.groovy.modules.http-builder:http-builder:0.7.1' )
  
 import groovyx.net.http.HTTPBuilder
-import groovy.json.JsonOutput
+//import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
 import static groovyx.net.http.Method.*
 import static groovyx.net.http.ContentType.*
 
@@ -85,7 +86,7 @@ def processEvent( Map args ) {
  
  // TODO - Error Checking
  
-  def returnValue = "";
+  def returnValue;
   def http = new HTTPBuilder( strKeptnURL + '/v1/event' );
   if (bDebug) http.ignoreSSLIssues();
 
@@ -112,19 +113,19 @@ def processEvent( Map args ) {
       ]
      response.success = { resp, json ->
       if (bDebug) echo "[dt_processEvent.groovy] Success: ${json} ++ Keptn Context: ${json.keptnContext}";
-      returnValue = [{key: 'result', value: 'success'}, {key: 'data', value: json.keptnContext}];
+      returnValue = [[key: 'result', value: 'success'], [key: 'data', value: json.keptnContext]];
      }
     
      response.failure = { resp, json ->
        println "Failure: ${resp} ++ ${json}";
        if (bDebug) echo "[dt_processEvent.groovy] Setting returnValue to: 'ERROR: SEND KEPTN EVENT FAILED'";
-      returnValue = [{key: 'result', value: 'fail'}, {key: 'data', value: 'ERROR: SEND KEPTN EVENT FAILED'}];
+      returnValue = [[key: 'result', value: 'fail'], [key: 'data', value: 'ERROR: SEND KEPTN EVENT FAILED']];
      }
     }
    }
     catch (Exception e) {
       echo "[dt_processEvent.groovy] SEND EVENT: Exception caught: " + e.getMessage();
-     returnValue = [{key: 'result', value: 'fail'}, {key: 'data', value: 'ERROR: ' + e.getMessage() }];
+     returnValue = [[key: 'result', value: 'fail'], [key: 'data', value: 'ERROR: ' + e.getMessage() ]];
     }
   } // End if "SEND" Keptn Event
  
@@ -187,6 +188,11 @@ def processEvent( Map args ) {
      returnValue = [[key: 'result', value: 'fail'], [key: 'data', value: e.getMessage()]];
    }
   } // End if "GET" Keptn Event
- 
+  
+  def slurper = new groovy.json.JsonSlurper();
+  def returnJSON = slurper.parseText(returnValue);
+  echo "-------------------";
+  echo returnJSON;
+  echo "-------------------";
   return returnValue;
 }
