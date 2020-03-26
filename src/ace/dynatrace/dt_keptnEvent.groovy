@@ -84,9 +84,49 @@ def processEvent( Map args ) {
    echo "[dt_processEvent.groovy] Timeout is: " + strTimeframe;
  }
  
- // TODO - Error Checking
+ def returnValue;
  
-  def returnValue;
+ // Temp
+ echo strKeptnURL;
+ 
+ if(strKeptnURL == "" ) {
+        echo "KEPTN_URL is a mandatory parameter!"
+        returnValue = [ "result": "fail", "data": "ERROR: Missing input parameters. See log." ];
+ }
+ if(strKeptnAPIToken == "" ) {
+        echo "KEPTN_API_TOKEN is a mandatory parameter!"
+        returnValue = [ "result": "fail", "data": "ERROR: Missing input parameters. See log." ];
+ }
+ if(strKeptnProject == "" ) {
+        echo "KEPTN_PROJECT is a mandatory parameter!"
+        returnValue = [ "result": "fail", "data": "ERROR: Missing input parameters. See log." ];
+ }
+ if(strKeptnService == "" ) {
+        echo "KEPTN_SERVICE is a mandatory parameter!"
+        returnValue = [ "result": "fail", "data": "ERROR: Missing input parameters. See log." ];
+ }
+ if(strKeptnStage == "" ) {
+        echo "KEPTN_STAGE is a mandatory parameter!"
+        returnValue = [ "result": "fail", "data": "ERROR: Missing input parameters. See log." ];
+ }
+ if(strKeptnEventType == "" ) {
+        echo "KEPTN_URL is a mandatory parameter!"
+        returnValue = [ "result": "fail", "data": "ERROR: Missing input parameters. See log." ];
+ }
+ if(strKeptnURL == "" ) {
+        echo "KEPTN_URL is a mandatory parameter!"
+        returnValue = [ "result": "fail", "data": "ERROR: Missing input parameters. See log." ];
+ }
+ if(strKeptnURL == "" ) {
+        echo "KEPTN_URL is a mandatory parameter!"
+        returnValue = [ "result": "fail", "data": "ERROR: Missing input parameters. See log." ];
+ }
+ if(strKeptnURL == "" ) {
+        echo "KEPTN_URL is a mandatory parameter!"
+        returnValue = [ "result": "fail", "data": "ERROR: Missing input parameters. See log." ];
+ }
+ 
+  
   def http = new HTTPBuilder( strKeptnURL + '/v1/event' );
   if (bDebug) http.ignoreSSLIssues();
 
