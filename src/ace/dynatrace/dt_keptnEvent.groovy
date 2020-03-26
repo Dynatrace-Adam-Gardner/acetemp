@@ -86,11 +86,12 @@ def processEvent( Map args ) {
  
  def returnValue;
  
- // Temp
- echo strKeptnURL;
- 
- if(strKeptnURL == "" ) {
+ if(strKeptnURL == "") {
         echo "KEPTN_URL is a mandatory parameter!"
+        returnValue = [ "result": "fail", "data": "ERROR: Missing input parameters. See log." ];
+ }
+ if(strKeptnURL == null) {
+        echo "KEPTN_URL is null a mandatory parameter!"
         returnValue = [ "result": "fail", "data": "ERROR: Missing input parameters. See log." ];
  }
  if(strKeptnAPIToken == "" ) {
