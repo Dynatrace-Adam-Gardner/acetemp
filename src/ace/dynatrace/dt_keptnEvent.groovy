@@ -1,8 +1,6 @@
 @Grab('org.codehaus.groovy.modules.http-builder:http-builder:0.7.1' )
  
 import groovyx.net.http.HTTPBuilder
-//import groovy.json.JsonOutput
-import groovy.json.JsonSlurper
 import static groovyx.net.http.Method.*
 import static groovyx.net.http.ContentType.*
 
@@ -129,6 +127,7 @@ def processEvent( Map args ) {
   * 1) Start Time & End Time are required or
   * 2) Start Time & Timeframe are required
   */
+ echo "GOT HERE";
  if (strStartTime != "" && strEndTime != "") {
    if (bDebug) echo "[dt_processEvent.groovy] Using start and end time"; 
  }
