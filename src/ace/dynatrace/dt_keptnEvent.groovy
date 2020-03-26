@@ -123,23 +123,6 @@ def processEvent( Map args ) {
    returnValue = [ "result": "fail", "data": "ERROR: Missing input parameters. See log." ];
  }
  
- /* Two possibilities for timing. Either:
-  * 1) Start Time & End Time are required or
-  * 2) Start Time & Timeframe are required
-  */
- echo "GOT HERE";
- if (strStartTime != "" && strEndTime != "") {
-   if (bDebug) echo "[dt_processEvent.groovy] Using start and end time"; 
- }
- else if (strStartTime != "" && strTimeframe != "") {
-   if (bDebug) echo "[dt_processEvent.groovy] Using start time and timeframe";
- }
- else {
-   echo "[dt_processEvent.groovy] Missing mandatory parameters. Either start time & end time OR start time & timeframe is required.";
-   echo "[dt_processEvent.groovy] Timestamp format: 2020-03-20T11:36:31Z";
-   returnValue = [ "result": "fail", "data": "ERROR: Missing input parameters. See log." ];
- }
- 
  // If we're missing inputs, return immediately
  if (returnValue != null) return returnValue;
 
@@ -156,6 +139,23 @@ def processEvent( Map args ) {
  
   if ("SEND" == strKeptnEventMethod) {
    try {
+    
+    /* Two possibilities for timing when SENDing a request. Either:
+     * 1) Start Time & End Time are required or
+     * 2) Start Time & Timeframe are required
+     */
+     if (strStartTime != "" && strEndTime != "") {
+       if (bDebug) echo "[dt_processEvent.groovy] Using start and end time"; 
+     }
+     else if (strStartTime != "" && strTimeframe != "") {
+       if (bDebug) echo "[dt_processEvent.groovy] Using start time and timeframe";
+     }
+     else {
+       echo "[dt_processEvent.groovy] Missing mandatory parameters. Either start time & end time OR start time & timeframe is required.";
+       echo "[dt_processEvent.groovy] Timestamp format: 2020-03-20T11:36:31Z";
+       returnValue = [ "result": "fail", "data": "ERROR: Missing input parameters. See log." ];
+     }
+    
     http.request( POST, JSON ) { req ->
       headers.'x-token' = strKeptnAPIToken
       headers.'Content-Type' = 'application/json'
