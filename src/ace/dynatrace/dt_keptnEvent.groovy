@@ -194,5 +194,5 @@ def processEvent( Map args ) {
    }
   } // End if "GET" Keptn Event
   
-  return returnValue;
+  return returnValue.toString();
 }
