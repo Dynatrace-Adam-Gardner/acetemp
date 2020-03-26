@@ -54,9 +54,16 @@ def processEvent( Map args ) {
  */
  String strKeptnURL, strKeptnAPIToken;
  strKeptnURL = strKeptnAPIToken = "";
- 
+
+ try {
    strKeptnURL = args.containsKey("keptn_url") ? args.keptn_url : "${KEPTN_URL}";
    strKeptnAPIToken = args.containsKey("keptn_api_token") ? args.keptn_api_token : "${KEPTN_API_TOKEN}";
+ }
+ catch (Exception e) {
+   echo "Missing mandatory parameters. KEPTN_URL and KEPTN_API_TOKEN are mandatory";
+   return [ "result": "fail", "data": "ERROR: Missing input parameters. See log." ];
+ }
+
    String strKeptnProject = args.containsKey("keptn_project") ? args.keptn_project : "";
    String strKeptnService = args.containsKey("keptn_service") ? args.keptn_service : "";
    String strKeptnStage = args.containsKey("keptn_stage") ? args.keptn_stage : "";
@@ -97,34 +104,25 @@ def processEvent( Map args ) {
         returnValue = [ "result": "fail", "data": "ERROR: Missing input parameters. See log." ];
  }
  if(strKeptnProject == "" ) {
-        echo "KEPTN_PROJECT is a mandatory parameter!"
+        echo "keptn_project is a mandatory parameter!"
         returnValue = [ "result": "fail", "data": "ERROR: Missing input parameters. See log." ];
  }
  if(strKeptnService == "" ) {
-        echo "KEPTN_SERVICE is a mandatory parameter!"
+        echo "keptn_service is a mandatory parameter!"
         returnValue = [ "result": "fail", "data": "ERROR: Missing input parameters. See log." ];
  }
  if(strKeptnStage == "" ) {
-        echo "KEPTN_STAGE is a mandatory parameter!"
+        echo "keptn_stage is a mandatory parameter!"
         returnValue = [ "result": "fail", "data": "ERROR: Missing input parameters. See log." ];
  }
  if(strKeptnEventType == "" ) {
-        echo "KEPTN_URL is a mandatory parameter!"
+        echo "keptn_event_type is a mandatory parameter!"
         returnValue = [ "result": "fail", "data": "ERROR: Missing input parameters. See log." ];
  }
- if(strKeptnURL == "" ) {
-        echo "KEPTN_URL is a mandatory parameter!"
+ if(strKeptnEventMethod == "" ) {
+        echo "keptn_event_method is a mandatory parameter!"
         returnValue = [ "result": "fail", "data": "ERROR: Missing input parameters. See log." ];
  }
- if(strKeptnURL == "" ) {
-        echo "KEPTN_URL is a mandatory parameter!"
-        returnValue = [ "result": "fail", "data": "ERROR: Missing input parameters. See log." ];
- }
- if(strKeptnURL == "" ) {
-        echo "KEPTN_URL is a mandatory parameter!"
-        returnValue = [ "result": "fail", "data": "ERROR: Missing input parameters. See log." ];
- }
- 
   
   def http = new HTTPBuilder( strKeptnURL + '/v1/event' );
   if (bDebug) http.ignoreSSLIssues();
