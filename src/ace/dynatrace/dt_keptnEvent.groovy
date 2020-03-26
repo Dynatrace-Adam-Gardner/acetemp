@@ -52,21 +52,23 @@ def processEvent( Map args ) {
    int iTimeout;
    boolean bDebug;
  */
+ String strKeptnURL, strKeptnAPIToken;
+ strKeptnURL = strKeptnAPIToken = "";
  
- String strKeptnURL = args.containsKey("keptn_url") ? args.keptn_url : "${KEPTN_URL}";
- String strKeptnAPIToken = args.containsKey("keptn_api_token") ? args.keptn_api_token : "${KEPTN_API_TOKEN}";
- String strKeptnProject = args.containsKey("keptn_project") ? args.keptn_project : "${KEPTN_PROJECT}";
- String strKeptnService = args.containsKey("keptn_service") ? args.keptn_service : "${KEPTN_SERVICE}";
- String strKeptnStage = args.containsKey("keptn_stage") ? args.keptn_stage : "${KEPTN_STAGE}";
- String strKeptnEventType = args.containsKey("keptn_event_type") ? args.keptn_event_type : "";
- String strKeptnEventMethod = args.containsKey("keptn_event_method") ? args.keptn_event_method : "";
- String strKeptnContext = args.containsKey("keptn_context") ? args.keptn_context : "";
- String strStartTime = args.containsKey("start_time") ? args.start_time : "${START_TIME}";
- String strEndTime = args.containsKey("end_time") ? args.end_time : "${END_TIME}";
- String strTimeframe = args.containsKey("timeframe") ? args.timeframe : "${TIMEFRAME}";
- int iTimeout = args.containsKey("timeout") ? args.timeout : 30; // Default timeout is 30 seconds
- boolean bDebug = args.containsKey("debug_mode") ? args.debug_mode : false;
- 
+   String strKeptnURL = args.containsKey("keptn_url") ? args.keptn_url : "${KEPTN_URL}";
+   String strKeptnAPIToken = args.containsKey("keptn_api_token") ? args.keptn_api_token : "${KEPTN_API_TOKEN}";
+   String strKeptnProject = args.containsKey("keptn_project") ? args.keptn_project : "";
+   String strKeptnService = args.containsKey("keptn_service") ? args.keptn_service : "";
+   String strKeptnStage = args.containsKey("keptn_stage") ? args.keptn_stage : "";
+   String strKeptnEventType = args.containsKey("keptn_event_type") ? args.keptn_event_type : "";
+   String strKeptnEventMethod = args.containsKey("keptn_event_method") ? args.keptn_event_method : "";
+   String strKeptnContext = args.containsKey("keptn_context") ? args.keptn_context : "";
+   String strStartTime = args.containsKey("start_time") ? args.start_time : "";
+   String strEndTime = args.containsKey("end_time") ? args.end_time : "";
+   String strTimeframe = args.containsKey("timeframe") ? args.timeframe : "";
+   int iTimeout = args.containsKey("timeout") ? args.timeout : 30; // Default timeout is 30 seconds
+   boolean bDebug = args.containsKey("debug_mode") ? args.debug_mode : false;
+
  echo "[dt_processEvent.groovy] Debug Mode: " + bDebug;
  
  if (bDebug) {
@@ -88,10 +90,6 @@ def processEvent( Map args ) {
  
  if(strKeptnURL == "") {
         echo "KEPTN_URL is a mandatory parameter!"
-        returnValue = [ "result": "fail", "data": "ERROR: Missing input parameters. See log." ];
- }
- if(strKeptnURL == null) {
-        echo "KEPTN_URL is null a mandatory parameter!"
         returnValue = [ "result": "fail", "data": "ERROR: Missing input parameters. See log." ];
  }
  if(strKeptnAPIToken == "" ) {
