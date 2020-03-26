@@ -73,9 +73,9 @@ def processEvent( Map args ) {
  String strKeptnEventType = args.containsKey("keptn_event_type") ? args.keptn_event_type : "";
  String strKeptnEventMethod = args.containsKey("keptn_event_method") ? args.keptn_event_method : "";
  String strKeptnContext = args.containsKey("keptn_context") ? args.keptn_context : "";
- String strStartTime = args.containsKey("start_time") ? args.start_time : "${START_TIME}";
- String strEndTime = args.containsKey("end_time") ? args.end_time : "${END_TIME}";
- String strTimeframe = args.containsKey("timeframe") ? args.timeframe : "${TIMEFRAME}";
+ String strStartTime = args.containsKey("start_time") ? args.start_time : "";
+ String strEndTime = args.containsKey("end_time") ? args.end_time : "";
+ String strTimeframe = args.containsKey("timeframe") ? args.timeframe : "";
  int iTimeout = args.containsKey("timeout") ? args.timeout : 30; // Default timeout is 30 seconds
  boolean bDebug = args.containsKey("debug_mode") ? args.debug_mode : false;
 
@@ -137,6 +137,7 @@ def processEvent( Map args ) {
  }
  else {
    echo "[dt_processEvent.groovy] Missing mandatory parameters. Either start time & end time OR start time & timeframe is required.";
+   echo "[dt_processEvent.groovy] Timestamp format: 2020-03-20T11:36:31Z";
    returnValue = [ "result": "fail", "data": "ERROR: Missing input parameters. See log." ];
  }
  
