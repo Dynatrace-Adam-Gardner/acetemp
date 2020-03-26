@@ -22,6 +22,8 @@ import static groovyx.net.http.ContentType.*
 @NonCPS
 def processEvent( Map args ) {
  
+  echo args.toString();
+ 
  /* -- Inputs --
    'keptn_url'
    'keptn_api_token'
