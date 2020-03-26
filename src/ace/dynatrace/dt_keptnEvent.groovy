@@ -64,7 +64,7 @@ def processEvent( Map args ) {
    return [ "result": "fail", "data": "ERROR: Missing input parameters. See log." ];
  }
 
-   String strKeptnProject = args.containsKey("keptn_project") ? args.keptn_project : "";
+   String strKeptnProject = args.containsKey("KEPTN_PROJECT") ? args.KEPTN_PROJECT : "";
    String strKeptnService = args.containsKey("keptn_service") ? args.keptn_service : "";
    String strKeptnStage = args.containsKey("keptn_stage") ? args.keptn_stage : "";
    String strKeptnEventType = args.containsKey("keptn_event_type") ? args.keptn_event_type : "";
