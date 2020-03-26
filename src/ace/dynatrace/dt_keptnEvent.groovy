@@ -90,7 +90,7 @@ def processEvent( Map args ) {
    echo "[dt_processEvent.groovy] Start Time is: " + strStartTime;
    echo "[dt_processEvent.groovy] End Time is: " + strEndTime;
    echo "[dt_processEvent.groovy] Timeframe is: " + strTimeframe;
-   echo "[dt_processEvent.groovy] Timeout is: " + strTimeframe;
+   echo "[dt_processEvent.groovy] Timeout is: " + iTimeout;
  }
  
  def returnValue;
@@ -123,6 +123,19 @@ def processEvent( Map args ) {
         echo "keptn_event_method is a mandatory parameter!"
         returnValue = [ "result": "fail", "data": "ERROR: Missing input parameters. See log." ];
  }
+ 
+ /* Two possibilities for timing. Either:
+  * 1) Start Time & End Time are required or
+  * 2) Start Time & Timeframe are required
+  */
+ boolean bValidTimeSelectors = false;
+ if (strStartTime != "" && strEndTime != "") bValidTimeSelectors = true;
+ else if (strStartTime != "" && strTimeframe != "") bValidTimeSelectors = true;
+ 
+  if (!bValidTimeSelectors) {
+    echo "Missing mandatory parameters. Either start time & end time OR start time & timeframe is required.";
+   return [ "result": "fail", "data": "ERROR: Missing input parameters. See log." ];
+  }
   
   def http = new HTTPBuilder( strKeptnURL + '/v1/event' );
   if (bDebug) http.ignoreSSLIssues();
