@@ -54,6 +54,7 @@ def processEvent( Map args ) {
    int iTimeout;
    boolean bDebug;
  */
+ def returnValue;
  String strKeptnURL, strKeptnAPIToken;
  strKeptnURL = strKeptnAPIToken = "";
 
@@ -62,21 +63,21 @@ def processEvent( Map args ) {
    strKeptnAPIToken = args.containsKey("keptn_api_token") ? args.keptn_api_token : "${KEPTN_API_TOKEN}";
  }
  catch (Exception e) {
-   echo "Missing mandatory parameters. KEPTN_URL and KEPTN_API_TOKEN are mandatory";
-   return [ "result": "fail", "data": "ERROR: Missing input parameters. See log." ];
+   echo "[dt_processEvent.groovy] Missing mandatory parameters. KEPTN_URL and KEPTN_API_TOKEN are mandatory";
+   returnValue = [ "result": "fail", "data": "ERROR: Missing input parameters. See log." ];
  }
 
-   String strKeptnProject = args.containsKey("KEPTN_PROJECT") ? args.KEPTN_PROJECT : "";
-   String strKeptnService = args.containsKey("keptn_service") ? args.keptn_service : "";
-   String strKeptnStage = args.containsKey("keptn_stage") ? args.keptn_stage : "";
-   String strKeptnEventType = args.containsKey("keptn_event_type") ? args.keptn_event_type : "";
-   String strKeptnEventMethod = args.containsKey("keptn_event_method") ? args.keptn_event_method : "";
-   String strKeptnContext = args.containsKey("keptn_context") ? args.keptn_context : "";
-   String strStartTime = args.containsKey("start_time") ? args.start_time : "";
-   String strEndTime = args.containsKey("end_time") ? args.end_time : "";
-   String strTimeframe = args.containsKey("timeframe") ? args.timeframe : "";
-   int iTimeout = args.containsKey("timeout") ? args.timeout : 30; // Default timeout is 30 seconds
-   boolean bDebug = args.containsKey("debug_mode") ? args.debug_mode : false;
+ String strKeptnProject = args.containsKey("keptn_project") ? args.keptn_project : "${KEPTN_PROJECT}";
+ String strKeptnService = args.containsKey("keptn_service") ? args.keptn_service : "${KEPTN_SERVICE}";
+ String strKeptnStage = args.containsKey("keptn_stage") ? args.keptn_stage : "${KEPTN_STAGE}";
+ String strKeptnEventType = args.containsKey("keptn_event_type") ? args.keptn_event_type : "";
+ String strKeptnEventMethod = args.containsKey("keptn_event_method") ? args.keptn_event_method : "";
+ String strKeptnContext = args.containsKey("keptn_context") ? args.keptn_context : "";
+ String strStartTime = args.containsKey("start_time") ? args.start_time : "${START_TIME}";
+ String strEndTime = args.containsKey("end_time") ? args.end_time : "${END_TIME}";
+ String strTimeframe = args.containsKey("timeframe") ? args.timeframe : "${TIMEFRAME}";
+ int iTimeout = args.containsKey("timeout") ? args.timeout : 30; // Default timeout is 30 seconds
+ boolean bDebug = args.containsKey("debug_mode") ? args.debug_mode : false;
 
  echo "[dt_processEvent.groovy] Debug Mode: " + bDebug;
  
@@ -95,56 +96,63 @@ def processEvent( Map args ) {
    echo "[dt_processEvent.groovy] Timeout is: " + iTimeout;
  }
  
- def returnValue;
- 
  if(strKeptnURL == "") {
-        echo "KEPTN_URL is a mandatory parameter!"
-        returnValue = [ "result": "fail", "data": "ERROR: Missing input parameters. See log." ];
+   echo "KEPTN_URL is a mandatory parameter!"
+   returnValue = [ "result": "fail", "data": "ERROR: Missing input parameters. See log." ];
  }
  if(strKeptnAPIToken == "" ) {
-        echo "KEPTN_API_TOKEN is a mandatory parameter!"
-        returnValue = [ "result": "fail", "data": "ERROR: Missing input parameters. See log." ];
+   echo "KEPTN_API_TOKEN is a mandatory parameter!"
+   returnValue = [ "result": "fail", "data": "ERROR: Missing input parameters. See log." ];
  }
  if(strKeptnProject == "" ) {
-        echo "keptn_project is a mandatory parameter!"
-        returnValue = [ "result": "fail", "data": "ERROR: Missing input parameters. See log." ];
+   echo "keptn_project is a mandatory parameter!"
+   returnValue = [ "result": "fail", "data": "ERROR: Missing input parameters. See log." ];
  }
  if(strKeptnService == "" ) {
-        echo "keptn_service is a mandatory parameter!"
-        returnValue = [ "result": "fail", "data": "ERROR: Missing input parameters. See log." ];
+   echo "keptn_service is a mandatory parameter!"
+   returnValue = [ "result": "fail", "data": "ERROR: Missing input parameters. See log." ];
  }
  if(strKeptnStage == "" ) {
-        echo "keptn_stage is a mandatory parameter!"
-        returnValue = [ "result": "fail", "data": "ERROR: Missing input parameters. See log." ];
+   echo "keptn_stage is a mandatory parameter!"
+   returnValue = [ "result": "fail", "data": "ERROR: Missing input parameters. See log." ];
  }
  if(strKeptnEventType == "" ) {
-        echo "keptn_event_type is a mandatory parameter!"
-        returnValue = [ "result": "fail", "data": "ERROR: Missing input parameters. See log." ];
+   echo "keptn_event_type is a mandatory parameter!"
+   returnValue = [ "result": "fail", "data": "ERROR: Missing input parameters. See log." ];
  }
  if(strKeptnEventMethod == "" ) {
-        echo "keptn_event_method is a mandatory parameter!"
-        returnValue = [ "result": "fail", "data": "ERROR: Missing input parameters. See log." ];
+   echo "keptn_event_method is a mandatory parameter!"
+   returnValue = [ "result": "fail", "data": "ERROR: Missing input parameters. See log." ];
  }
  
  /* Two possibilities for timing. Either:
   * 1) Start Time & End Time are required or
   * 2) Start Time & Timeframe are required
   */
- boolean bValidTimeSelectors = false;
- if (strStartTime != "" && strEndTime != "") bValidTimeSelectors = true;
- else if (strStartTime != "" && strTimeframe != "") bValidTimeSelectors = true;
+ if (strStartTime != "" && strEndTime != "") {
+   if (bDebug) echo "[dt_processEvent.groovy] Using start and end time"; 
+ }
+ else if (strStartTime != "" && strTimeframe != "") {
+   if (bDebug) echo "[dt_processEvent.groovy] Using start time and timeframe";
+ }
+ else {
+   echo "[dt_processEvent.groovy] Missing mandatory parameters. Either start time & end time OR start time & timeframe is required.";
+   returnValue = [ "result": "fail", "data": "ERROR: Missing input parameters. See log." ];
+ }
  
-  if (!bValidTimeSelectors) {
-    echo "Missing mandatory parameters. Either start time & end time OR start time & timeframe is required.";
-   return [ "result": "fail", "data": "ERROR: Missing input parameters. See log." ];
-  }
-  
+ // If we're missing inputs, return immediately
+ if (returnValue != null) return returnValue;
+
+  /* Done processing input params & args.
+   * Let's get on and do some work!
+   */
+ 
   def http = new HTTPBuilder( strKeptnURL + '/v1/event' );
   if (bDebug) http.ignoreSSLIssues();
-
- //----------------------------------
- //-------- SEND KEPTN EVENT --------
- //----------------------------------
+ 
+ //-------------------------------------------------------------------
+ //------------------------ SEND KEPTN EVENT -------------------------
+ //-------------------------------------------------------------------
  
   if ("SEND" == strKeptnEventMethod) {
    try {
@@ -177,15 +185,14 @@ def processEvent( Map args ) {
    }
     catch (Exception e) {
       echo "[dt_processEvent.groovy] SEND EVENT: Exception caught: " + e.getMessage();
-     //returnValue = [[key: 'result', value: 'fail'], [key: 'data', value: 'ERROR: ' + e.getMessage() ]];
      returnValue = [ "result": "fail", "data": "ERROR: " + e.getMessage() ];
      
     }
   } // End if "SEND" Keptn Event
  
- //---------------------------------
- //-------- GET KEPTN EVENT --------
- //---------------------------------
+ //-------------------------------------------------------------------
+ //------------------------ GET KEPTN EVENT --------------------------
+ //-------------------------------------------------------------------
  
   if ("GET" == strKeptnEventMethod) {  
    try {
@@ -195,12 +202,12 @@ def processEvent( Map args ) {
       * If it wasn't +1 we'd sleep and not test the final time.
       */
      int iMaxIterations = (int) (iTimeout / 10) + 1;
-     echo "Max Iterations = " + iMaxIterations;
+     if (bDebug) echo "Max Iterations = " + iMaxIterations;
     
      if (bDebug) echo "[dt_processEvent.groovy] Keptn Context: " + strKeptnContext;
     
      while (iIterationCount < iMaxIterations) {
-      echo "Iteration Count: " + iIterationCount;
+      if (bDebug) echo "Iteration Count: " + iIterationCount;
      
      http.request( GET, JSON ) {
      
@@ -216,18 +223,18 @@ def processEvent( Map args ) {
         */
        if (json.code != 500) iIterationCount = 10000;
        
-       //returnValue = [ [key: 'result', value: 'success'], [key: 'data', value: "${json}"], [key: 'keptnResult', value: "${json.data.result}"]];
        returnValue = [ "result": "success", "data": "${json}", "keptnResult": "${json.data.result}" ];
       }
     
       response.failure = { resp, json ->
         if (bDebug) echo "[dt_processEvent.groovy] Setting returnValue to: ${json}";
-        //returnValue = [[key: 'result', value: 'fail'], [key: 'data', value: 'ERROR: ' + json ]];
-       returnValue = [ "result": "fail", "data": "ERROR: ${json}" ];
+        returnValue = [ "result": "fail", "data": "ERROR: ${json}" ];
        }
       } // end http GET
       
-      // If, at this point, we have a valid result iIterationCount will be 10000, so if we're still waiting for the keptn event, sleep for 10s then retry.
+      /* If, at this point, we have a valid result iIterationCount will be 10000.
+       * Otherwise, we're still waiting for the keptn event, sleep for 10s then retry.
+       */
       if (iIterationCount >= iMaxIterations) {
         echo "[dt_processEvent.groovy] Got a valid result or reached the timeout. Returning to pipeline...";
       }
@@ -241,7 +248,6 @@ def processEvent( Map args ) {
    } // End try
    catch (Exception e) {
      echo "[dt_processEvent.groovy] GET EVENT: Exception caught: " + e.getMessage();
-     //returnValue = [[key: 'result', value: 'fail'], [key: 'data', value: e.getMessage()]];
      returnValue = [ "result": "fail", "data": "ERROR: " + e.getMessage()];
    }
   } // End if "GET" Keptn Event
