@@ -55,8 +55,8 @@ def processEvent( Map args ) {
  String strKeptnURL, strKeptnAPIToken;
  strKeptnURL = strKeptnAPIToken = "";
  
-   String strKeptnURL = args.containsKey("keptn_url") ? args.keptn_url : "${KEPTN_URL}";
-   String strKeptnAPIToken = args.containsKey("keptn_api_token") ? args.keptn_api_token : "${KEPTN_API_TOKEN}";
+   strKeptnURL = args.containsKey("keptn_url") ? args.keptn_url : "${KEPTN_URL}";
+   strKeptnAPIToken = args.containsKey("keptn_api_token") ? args.keptn_api_token : "${KEPTN_API_TOKEN}";
    String strKeptnProject = args.containsKey("keptn_project") ? args.keptn_project : "";
    String strKeptnService = args.containsKey("keptn_service") ? args.keptn_service : "";
    String strKeptnStage = args.containsKey("keptn_stage") ? args.keptn_stage : "";
